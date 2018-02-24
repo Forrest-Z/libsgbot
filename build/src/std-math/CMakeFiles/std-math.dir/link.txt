@@ -1,2 +1,0 @@
-/usr/bin/ar qc libstd-math.a  CMakeFiles/std-math.dir/math-std.cpp.o CMakeFiles/std-math.dir/math-neon.cpp.o
-/usr/bin/ranlib libstd-math.a

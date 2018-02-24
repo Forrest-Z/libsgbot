@@ -1,2 +1,0 @@
-/usr/bin/ar qc libtransform.a  CMakeFiles/transform.dir/transform2d-std.cpp.o CMakeFiles/transform.dir/transform2d-neon.cpp.o
-/usr/bin/ranlib libtransform.a

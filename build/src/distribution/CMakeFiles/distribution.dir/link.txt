@@ -1,2 +1,0 @@
-/usr/bin/ar qc libdistribution.a  CMakeFiles/distribution.dir/gaussian.cpp.o
-/usr/bin/ranlib libdistribution.a
