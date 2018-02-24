@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblinear-algebra.a  CMakeFiles/linear-algebra.dir/matrix-std.cpp.o CMakeFiles/linear-algebra.dir/matrix-neon.cpp.o
+/usr/bin/ranlib liblinear-algebra.a

@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/cybernik/Development/open/libsgbot/src/std-math/math-neon.cpp
+std-math/math.h
+-
+
+/home/cybernik/Development/open/libsgbot/src/std-math/math-std.cpp
+std-math/math.h
+-
+
