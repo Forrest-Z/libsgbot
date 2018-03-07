@@ -23,7 +23,6 @@ namespace distr {
   class Distribution {
   public:
     Distribution() {
-
     }
 
     virtual ~Distribution() {}
