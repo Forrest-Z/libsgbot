@@ -12,17 +12,13 @@
 #include <common/exception.h>
 #include <linear-algebra/matrix.h>
 #include <linear-algebra/vector.h>
+#include <type/pose2d.h>
+#include <type/point2d.h>
 
 namespace sgbot {
 namespace tf {
 
   using namespace sgbot::la;
-
-  typedef struct {
-    double x;
-    double y;
-    double theta;
-  }Pose2D;
 
   class Transform2D {
   public:
@@ -70,7 +66,9 @@ namespace tf {
     Transform2D inverse();
 
     // To transform a pose in origin frame
-    Pose2D transform(const Pose2D pose);
+    sgbot::Pose2D transform(const sgbot::Pose2D& pose);
+
+    sgbot::Point2D transform(const sgbot::Point2D& point);
     
 
   private:

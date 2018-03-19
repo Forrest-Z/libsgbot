@@ -18,6 +18,7 @@ ADD_SUBDIRECTORY(linear-algebra)
 ADD_SUBDIRECTORY(std-math)
 ADD_SUBDIRECTORY(transform)
 ADD_SUBDIRECTORY(distribution)
+ADD_SUBDIRECTORY(slam)
 
 ADD_LIBRARY(sgbot SHARED ${STANDALONE_SRCS})
 
@@ -26,4 +27,5 @@ TARGET_LINK_LIBRARIES(sgbot
   std-math
   transform
   distribution
+  slam
 )

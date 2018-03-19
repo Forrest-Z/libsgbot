@@ -26,15 +26,15 @@ namespace math {
 
   double ceil(double value);
 
-  double frexp(double value,int *eptr);
+  double frexp(double value, int *eptr);
 
-  double ldexp(double value,int exp);
+  double ldexp(double value, int exp);
 
   double log(double x);
 
   double log10(double x);
 
-  double pow(double x,double y);
+  double pow(double x, double y);
 
   double pow10(int p);
 
@@ -60,7 +60,7 @@ namespace math {
 
   double tanh(double x);
 
-  double hypot(double x,double y);
+  double hypot(double x, double y);
 
 }  // namespace math  
 }  // namespace sgbot

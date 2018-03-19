@@ -10,14 +10,10 @@
 #define _SENSOR_LIDAR2D_H_
 
 #include <vector>
+#include <type/point2d.h>
 
 namespace sgbot {
 namespace sensor {
-
-  typedef struct {
-    double x;
-    double y;
-  }Point2D;
 
   class Lidar2D {
   public:

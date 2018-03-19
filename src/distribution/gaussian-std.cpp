@@ -1,10 +1,12 @@
-/* Created distribution/gaussian.cpp by CybernikLee
+/* Created distribution/gaussian-std.cpp by CybernikLee
  *
  * E-Mail <cyberniklee@gmail.com>
  *
  * Copyright 2018 GuangZhou SmartGiant Tech 
  * 
  */
+
+#ifdef _USE_STD_ARITHMETIC_
 
 #include <distribution/gaussian.h>
 
@@ -31,3 +33,5 @@ namespace distr {
 
 }  // namespace distr
 }  // namespace sgbot
+
+#endif  // _USE_STD_ARITHMETIC_

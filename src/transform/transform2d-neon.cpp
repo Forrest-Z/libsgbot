@@ -24,7 +24,13 @@ namespace tf {
 
   }
 
-  Pose2D Transform2D::transform(const Pose2D pose) {
+  sgbot::Pose2D Transform2D::transform(const sgbot::Pose2D& pose)
+  {
+
+  }
+
+  sgbot::Point2D Transform2D::transform(const sgbot::Point2D& pose)
+  {
 
   }
 

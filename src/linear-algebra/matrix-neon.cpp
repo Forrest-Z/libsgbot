@@ -12,22 +12,26 @@
 
 namespace sgbot {
 namespace la {
-  Matrix& Matrix::operator +=(const T scalar)
+  template <typename T, size_t R, size_t C>
+  Matrix<T, R, C>& Matrix<T, R, C>::operator +=(const T scalar)
   {
 
   }
 
-  Matrix& Matrix::operator -=(const T scalar)
+  template <typename T, size_t R, size_t C>
+  Matrix<T, R, C>& Matrix<T, R, C>::operator -=(const T scalar)
   {
 
   }
-  
-  Matrix& Matrix::operator *=(const T scalar)
+
+  template <typename T, size_t R, size_t C>
+  Matrix<T, R, C>& Matrix<T, R, C>::operator *=(const T scalar)
   {
 
   }
-  
-  Matrix& Matrix::operator /=(const T scalar)
+
+  template <typename T, size_t R, size_t C>
+  Matrix<T, R, C>& Matrix<T, R, C>::operator /=(const T scalar)
   {
 
   }
