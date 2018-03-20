@@ -9,6 +9,8 @@
 #ifndef _SLAM_HECTOR_MAP_OCCUPANCY_GRIDMAP_BASE_H_
 #define _SLAM_HECTOR_MAP_OCCUPANCY_GRIDMAP_BASE_H_
 
+#include <climits>
+
 #include <common/exception.h>
 #include <slam/hector/map/gridmap/base.h>
 #include <sensor/lidar2d.h>
@@ -87,6 +89,35 @@ namespace hector {
     }
 
     void updateByScan(const sgbot::sensor::Lidar2D& scan, const sgbot::Pose2D& world_pose);
+
+  private:
+
+    inline void updateLine(const int x0, const int y0, const int x1, const int y1, unsigned int max_length = UINT_MAX);
+
+    inline void updateCellFree(int index)
+    {
+      CellType& cell(this->getCell(index));
+
+      if(cell.getIndex() < current_mark_occupancy_index_)
+      {
+        cell_factor_.setFree(cell);
+        cell.setIndex(current_mark_free_index_);
+      }
+    }
+
+    inline void updateCellOccupied(int index)
+    {
+      CellType& cell(this->getCell(index));
+      
+      if(cell.getIndex() == current_mark_free_index_)
+      {
+        cell_factor_.unsetFree(cell);
+      }
+
+      cell_factor_.setOccupied(cell);
+
+      cell.setIndex(current_mark_occupancy_index_);
+    }
 
   protected:
     CellFactor cell_factor_;

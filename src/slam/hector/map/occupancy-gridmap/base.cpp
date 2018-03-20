@@ -18,6 +18,12 @@ namespace hector {
 
   }
 
+  template <typename CellType, typename CellFactor>
+  void OccupancyGridMapBase<CellType, CellFactor>::updateLine(const int x0, const int y0, const int x1, const int y1, unsigned int max_length)
+  {
+
+  }
+
 }  // namespace hector
 }  // namespace slam
 }  // namespace sgbot
