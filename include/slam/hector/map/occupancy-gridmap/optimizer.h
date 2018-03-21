@@ -30,6 +30,20 @@ namespace hector {
     virtual ~OccupancyGridMapOptimizer() {}
 
     void getCompleteHessianDerivs(const sgbot::Pose2D& estimate_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& hessian, sgbot::tf::Transform2D& delta_transformation);
+    
+    sgbot::la::Matrix<float, 3, 3> getPoseCovariance(const sgbot::Pose2D& map_pose, const sgbot::sensor::Lidar2D& scan);
+
+    sgbot::la::Matrix<float, 3, 3> getWorldCoordsCovariance(const sgbot::la::Matrix<float, 3, 3>& map_coords_cov);
+
+    float getStateResidual(const sgbot::Pose2D& state, const sgbot::sensor::Lidar2D& points);
+
+    float getResidualLikelihood(float residual, int scan_points_count);
+
+    float getStateLikelihood(const sgbot::Pose2D& state, const sgbot::sensor::Lidar2D& points);
+
+    float getInterpMapValue(const sgbot::Point2D& coords);
+
+    bool interpMapValueWithDerivatives(const sgbot::Point2D& coords, float& occupancy_value, float& derivative_x, float& derivative_y);
 
   protected:
     OccupancyGridMap* gridmap_;
