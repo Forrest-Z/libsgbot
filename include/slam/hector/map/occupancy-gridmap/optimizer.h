@@ -45,6 +45,36 @@ namespace hector {
 
     bool interpMapValueWithDerivatives(const sgbot::Point2D& coords, float& occupancy_value, float& derivative_x, float& derivative_y);
 
+    inline sgbot::Point2D getWorldCoords(const sgbot::Point2D& map_coords) const
+    {
+      return gridmap_->getWorldCoords(map_coords);
+    }
+
+    inline sgbot::Point2D getMapCoords(const sgbot::Point2D& world_coords) const
+    {
+      return gridmap_->getMapCoords(world_coords);
+    }
+
+    inline sgbot::Pose2D getWorldPose(const sgbot::Pose2D& map_pose) const
+    {
+      return gridmap_->getWorldPose(map_pose);
+    }
+
+    inline sgbot::Pose2D getMapPose(const sgbot::Pose2D& world_pose) const
+    {
+      return gridmap_->getMapPose(world_pose);
+    }
+
+    float getCellProbability(const int index) const
+    {
+      return gridmap_->getCellProbability(index);
+    }
+
+    void resetCache()
+    {
+      cache_.resetCache();
+    }
+
   protected:
     OccupancyGridMap* gridmap_;
     GridMapCache cache_;

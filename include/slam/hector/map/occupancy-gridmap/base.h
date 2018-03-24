@@ -46,7 +46,7 @@ namespace hector {
       cell_factor_.unsetCellFree(this->getCell(index));
     }
 
-    float getCellProbability(int index) const
+    float getCellProbability(int index)
     {
       return cell_factor_.getProbability(this->getCell(index));
     }
@@ -94,7 +94,7 @@ namespace hector {
 
     inline void updateLine(const int x0, const int y0, const int x1, const int y1, unsigned int max_length = UINT_MAX);
 
-    inline void updateCellFree(int index)
+    inline void updateCellAsFree(int index)
     {
       CellType& cell(this->getCell(index));
 
@@ -105,7 +105,7 @@ namespace hector {
       }
     }
 
-    inline void updateCellOccupied(int index)
+    inline void updateCellAsOccupied(int index)
     {
       CellType& cell(this->getCell(index));
       
