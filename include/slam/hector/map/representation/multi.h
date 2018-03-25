@@ -52,26 +52,37 @@ namespace hector {
 
     virtual void reset()
     {
+      for(int i = 0; i < maps_.size(); ++i)
+      {
+        maps_[i]->getMap().reset();
+        maps_[i]->getOptimizer().resetCache();
+      }
     }
 
     virtual float getScalingFactor() const
     {
-
+      return maps_[0]->getMap().getScalingFactor();
     }
 
     virtual int getLevels() const
     {
-
+      return levels_;
     }
 
     virtual const OccupancyGridMap& getMap(int level) const
     {
-
+      if(level < levels_)
+        return maps_[level]->getMap();
+      else
+        return maps_[0]->getMap();
     }
     
     virtual void onMapUpdated()
     {
-
+      for(int i = 0; i < maps_.size(); ++i)
+      {
+        maps_[i]->getOptimizer().resetCache();
+      }
     }
 
     virtual sgbot::Pose2D scanMatch(const sgbot::Pose2D& estimate_world_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& covariance)
@@ -86,12 +97,18 @@ namespace hector {
 
     virtual void setCellFreeFactor(float factor)
     {
-
+      for(int i = 0; i < maps_.size(); ++i)
+      {
+        maps_[i]->getMap().setCellFreeFactor(factor);
+      }
     }
 
     virtual void setCellOccupiedFactor(float factor)
     {
-
+      for(int i = 0; i < maps_.size(); ++i)
+      {
+        maps_[i]->getMap().setCellOccupiedFactor(factor);
+      }
     }
   
   private:
