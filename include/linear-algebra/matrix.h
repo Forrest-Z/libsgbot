@@ -9,6 +9,7 @@
 #ifndef _LA_MATRIX_H_
 #define _LA_MATRIX_H_
 
+#include <assert.h>
 #include <vector>
 #include <common/exception.h>
 
@@ -37,28 +38,42 @@ namespace la {
     virtual ~Matrix() {}
 
     // Copy constructor
-    Matrix(const Matrix& matrix) {}
+    Matrix(const Matrix& other)
+    {
+      assert(rows_ == other.getRows());
+      assert(columns_ == other.getColumns());
+
+      for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < columns_; j++)
+          matrix_[i][j] = other(i, j);
+    }
 
     // Member functions
-    size_t getRows() {
-      
+    size_t getRows() 
+    {
       return rows_;
-      
     }
     
-    size_t getColumns() {
-      
+    size_t getColumns()
+    {
       return columns_;
-      
     }
 
     // Copy operator
-    virtual T& operator()(size_t row, size_t column) {
+    virtual T& operator()(size_t row, size_t column)
+    {
+      assert(row < rows_);
+      assert(column < columns_);
 
+      return matrix_[row][column];
     }
     
-    virtual T operator()(size_t row, size_t column) const {
+    virtual T operator()(size_t row, size_t column) const
+    {
+      assert(row < rows_);
+      assert(column < columns_);
 
+      return matrix_[row][column];
     }
 
     // Matrix scalar operators
@@ -86,9 +101,15 @@ namespace la {
     virtual Matrix transpose() const;
     virtual Matrix determinant() const;
 
-    // Matrix other operations
-    void indentity() {
+    // Other Matrix operations
+    void indentity()
+    {
+      assert(rows_ == columns_);
 
+      for(int i = 0; i < rows_; i++)
+      {
+        matrix_[i][i] = (T)1;
+      }
     }
   
   private:

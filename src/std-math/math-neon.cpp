@@ -18,11 +18,6 @@ namespace math {
 
   }
 
-  double cabs(double a, double b)
-  {
-
-  }
-
   double fabs(double x)
   {
 
