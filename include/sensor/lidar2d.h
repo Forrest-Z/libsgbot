@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <type/point2d.h>
+#include <std-math/math.h>
 
 namespace sgbot {
 namespace sensor {
@@ -23,38 +24,70 @@ namespace sensor {
     // Define destructor
     virtual ~Lidar2D() {};
 
+    // Copy constructor
+    Lidar2D(const Lidar2D& other)
+    {
+      origin_ = other.getOrigin();
+      
+      points_.resize(other.getCount());
+
+      for(int i = 0; i < points_.size(); ++i)
+      {
+        points_[i] = other.getPoint(i);
+      }
+    }
+
     // Member functions
-    void addBeam(double angle, double distance)
+    void addBeam(float angle, float distance)
     {
+      float x = sgbot::math::cos(angle) * distance;
+      float y = sgbot::math::sin(angle) * distance;
 
+      addPoint(x, y);
     }
 
-    void addPoint(Point2D point)
+    void addPoint(sgbot::Point2D point)
     {
-
+      points_.push_back(point);
     }
 
-    void addPoint(double x, double y)
+    void addPoint(float x, float y)
     {
+      sgbot::Point2D point;
+      point.x = x;
+      point.x = y;
 
+      addPoint(point);
     }
 
-    size_t count()
+    int getCount() const
     {
       return points_.size();
     }
 
-    Point2D getPoint(int index)
+    const sgbot::Point2D& getPoint(int index) const
     {
-
+      return points_[index];
     }
 
     void clear()
     {
       points_.clear();
     }
+
+    const sgbot::Point2D& getOrigin() const
+    {
+      return origin_;
+    }
+
+    void setOrigin(const sgbot::Point2D& origin)
+    {
+      origin_ = origin;
+    }
+
   private:
-    std::vector<Point2D> points_;
+    std::vector<sgbot::Point2D> points_;
+    sgbot::Point2D origin_;
   };
 }  // namespace sgbot
 }  // namespace sensor

@@ -32,7 +32,6 @@ namespace hector {
 
     virtual void reset() = 0;
 
-
     virtual float getScalingFactor() const = 0;
 
     virtual int getLevels() const = 0;

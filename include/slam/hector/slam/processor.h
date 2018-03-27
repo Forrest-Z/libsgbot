@@ -23,9 +23,9 @@ namespace hector {
 
   class SlamProcessor {
   public:
-    SlamProcessor(const MapProperties& properties, bool use_multi_level_map)
+    SlamProcessor(const MapProperties& properties, bool use_multi_level_maps)
     {
-      if(use_multi_level_map)
+      if(use_multi_level_maps)
       {
         map_representation_ = new RepresentationMultiMap(properties, 3);
       }
