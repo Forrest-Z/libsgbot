@@ -108,7 +108,7 @@ namespace la {
 
       for(int i = 0; i < rows_; i++)
       {
-        matrix_[i][i] = (T)1;
+        matrix_[i][i] = static_cast<T>(1.0f);;
       }
     }
   
