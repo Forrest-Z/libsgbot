@@ -32,16 +32,28 @@ namespace la {
     // Define Constructors
     Matrix()
       : rows_(R), columns_(C)
-    {}
+    {
+      matrix_ = new T*[rows_];
+      for(int i = 0; i < rows_; i++)
+      {
+        matrix_[i] = new T[columns_];
+      }
+    }
 
     // Define Destructor
-    virtual ~Matrix() {}
+    virtual ~Matrix()
+    {
+      for(int i = 0; i < rows_; i++)
+      {
+        delete[] matrix_[i];
+      }
+      matrix_ = NULL;
+    }
 
     // Copy constructor
     Matrix(const Matrix& other)
     {
-      assert(rows_ == other.getRows());
-      assert(columns_ == other.getColumns());
+      resize(other.getRows(), other.getColumns());
 
       for(int i = 0; i < rows_; i++)
         for(int j = 0; j < columns_; j++)
@@ -49,7 +61,7 @@ namespace la {
     }
 
     // Member functions
-    size_t getRows() 
+    size_t getRows()
     {
       return rows_;
     }
@@ -57,6 +69,24 @@ namespace la {
     size_t getColumns()
     {
       return columns_;
+    }
+
+    void resize(size_t rows, size_t columns)
+    {
+      for(int i = 0; i < rows_; i++)
+      {
+        delete[] matrix_[i];
+      }
+      matrix_ = NULL;
+
+      matrix_ = new T*[rows_];
+      for(int i = 0; i < rows_; i++)
+      {
+        matrix_[i] = new T[columns_];
+      }
+
+      rows_ = rows;
+      columns_ = columns;
     }
 
     // Copy operator
@@ -108,12 +138,12 @@ namespace la {
 
       for(int i = 0; i < rows_; i++)
       {
-        matrix_[i][i] = static_cast<T>(1.0f);;
+        matrix_[i][i] = static_cast<T>(1.0f);
       }
     }
   
   private:
-    T matrix_[R][C];
+    T** matrix_;
     size_t rows_, columns_;
   
   }; // class Matrix
