@@ -64,7 +64,7 @@ namespace la {
     Matrix& operator =(const Matrix& other) const
     {
       Matrix matrix(other);
-      return other;
+      return matrix;
     }
 
     // Member functions

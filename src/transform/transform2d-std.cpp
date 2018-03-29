@@ -12,15 +12,18 @@
 
 namespace sgbot {
 namespace tf {
-  Transform2D& Transform2D::operator *=(const Transform2D& tf) {
+  Transform2D& Transform2D::operator *=(const Transform2D& tf)
+  {
 
   }
 
-  Transform2D Transform2D::operator *(const Transform2D& tf) {
+  Transform2D Transform2D::operator *(const Transform2D& tf)
+  {
 
   }
 
-  Transform2D Transform2D::inverse() {
+  Transform2D Transform2D::inverse()
+  {
 
   }
 

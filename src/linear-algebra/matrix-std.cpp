@@ -393,7 +393,6 @@ namespace la {
     }
     else
     {
-      
       for(int i = 0; i < dimensions; i++)
       {
         int sub_row = 0;
@@ -411,7 +410,7 @@ namespace la {
           }
           sub_row++;
         }
-        *pre_det = *pre_det + (sgbot::math::pow(-1, i) * matrix[0][i] * determinantRecuision((dimensions - 1), sub_matrix, sub_matrix, pre_det));
+        *pre_det += (sgbot::math::pow(-1, i) * matrix[0][i] * determinantRecuision((dimensions - 1), sub_matrix, sub_matrix, pre_det));
       }
     }
     return *pre_det;

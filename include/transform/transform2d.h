@@ -31,31 +31,41 @@ namespace tf {
     virtual ~Transform2D() {}
 
     // Copy constructor
-    Transform2D(const Transform2D& tf) {}
+    Transform2D(const Transform2D& tf)
+    {
+      float x, y, theta;
+      tf.getValue(x, y, theta);
+      setValue(x, y, theta);
+    }
 
-  public:
     // Copy operator
-    Transform2D& operator()(double x, double y, double theta) {
-
+    Transform2D& operator()(float x, float y, float theta)
+    {
+      Transform2D& tf = *this;
+      tf.setValue(x, y, theta);
+      return tf;
     }
     
-    Transform2D operator()(double x, double y, double theta) const {
-
+    Transform2D operator()(float x, float y, float theta) const
+    {
+      Transform2D tf(*this);
+      tf.setValue(x, y, theta);
+      return tf;
     }
 
     // Transform operations
     Transform2D& operator *=(const Transform2D& tf);
-    Transform2D operator *(const Transform2D& tf);
+    Transform2D operator *(const Transform2D& tf) const;
 
     // Member functions
-    void setValue(double x, double y, double theta)
+    void setValue(float x, float y, float theta)
     {
       x_ = x;
       y_ = y;
       theta_ = theta;
     }
 
-    void getValue(double& x, double& y, double& theta)
+    void getValue(float& x, float& y, float& theta)
     {
       x = x_;
       y = y_;
@@ -72,7 +82,7 @@ namespace tf {
     
 
   private:
-    double x_, y_, theta_;
+    float x_, y_, theta_;
   };  // class Transform2D
 
 }  // namespace tf
