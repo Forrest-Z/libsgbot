@@ -9,32 +9,39 @@
 #ifdef _USE_STD_ARITHMETIC_
 
 #include <transform/transform2d.h>
+#include <std-math/math.h>
 
 namespace sgbot {
 namespace tf {
-  Transform2D& Transform2D::operator *=(const Transform2D& tf)
-  {
-
-  }
-
-  Transform2D Transform2D::operator *(const Transform2D& tf)
-  {
-
-  }
-
-  Transform2D Transform2D::inverse()
-  {
-
-  }
 
   sgbot::Pose2D Transform2D::transform(const sgbot::Pose2D& pose)
   {
+    sgbot::Pose2D result;
 
+    sgbot::Point2D point;
+    point.x = pose.x;
+    point.y = pose.y;
+    
+    point = transform(point);
+
+    result.x = point.x;
+    result.y = point.y;
+    result.theta = pose.theta + theta_;
+
+    return result;
   }
 
-  sgbot::Point2D Transform2D::transform(const sgbot::Point2D& pose)
+  sgbot::Point2D Transform2D::transform(const sgbot::Point2D& point)
   {
+    sgbot::Point2D result;
 
+    float cos_val = sgbot::math::cos(theta_);
+    float sin_val = sgbot::math::sin(theta_);
+
+    result.x = x_ * cos_val + y_ * sin_val + point.x;
+    result.y = y_ * cos_val - x_ * sin_val + point.y;
+
+    return result;
   }
 
 }  // namespace tf
