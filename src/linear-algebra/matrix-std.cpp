@@ -9,6 +9,7 @@
 #ifdef _USE_STD_ARITHMETIC_
 
 #include <linear-algebra/matrix.h>
+#include <std-math/math.h>
 
 namespace sgbot {
 namespace la {
@@ -369,13 +370,80 @@ namespace la {
   template <typename T, size_t R, size_t C>
   Matrix<T, R, C> Matrix<T, R, C>::transpose() const
   {
+    Matrix<T, R, C> result(*this);
+    result.resize(result.getColumns(), result.getRows());
 
+    for(int i = 0; i < result.getRows(); i++)
+    {
+      for(int j = 0; j < result.getColumns(); j++)
+      {
+        result[i][j] = matrix_[j][i];
+      }
+    }
+
+    return result;
+  }
+
+  template <typename T>
+  static T determinantRecuision(int dimensions, T** matrix, T** sub_matrix, T* pre_det)
+  {
+    if(dimensions == 2)
+    {
+      return ((matrix[0][0] * matrix[1][1]) - (matrix[1][0] * matrix[0][1]));
+    }
+    else
+    {
+      
+      for(int i = 0; i < dimensions; i++)
+      {
+        int sub_row = 0;
+        for(int j = 1; j < dimensions; j++)
+        {
+          int sub_col = 0;
+          for(int k = 0; k < dimensions; k++)
+          {
+            if(k == i)
+            {
+              continue;
+            }
+            sub_matrix[sub_row][sub_col] = matrix[j][k];
+            sub_col++;
+          }
+          sub_row++;
+        }
+        *pre_det = *pre_det + (sgbot::math::pow(-1, i) * matrix[0][i] * determinantRecuision((dimensions - 1), sub_matrix, sub_matrix, pre_det));
+      }
+    }
+    return *pre_det;
   }
 
   template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::determinant() const
+  T Matrix<T, R, C>::determinant() const
   {
+    assert(rows_ == columns_);
 
+    size_t dimensions = rows_;
+
+    T* det = new T;
+    *det = 0;
+
+    double** temp = new double*[dimensions];
+    for(int i = 0; i < dimensions; i++)
+    {
+      temp[i] = new double[dimensions];
+    }
+
+    T result = determinantRecuision(dimensions, matrix_, temp, det);
+
+    delete det;
+
+    for(int i = 0; i < dimensions; i++)
+    {
+      delete[] temp[i];
+    }
+    delete[] temp;
+
+    return result;
   }
 
 }  // namespace la  

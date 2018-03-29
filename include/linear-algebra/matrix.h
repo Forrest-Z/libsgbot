@@ -61,6 +61,12 @@ namespace la {
           matrix_[i][j] = other(i, j);
     }
 
+    Matrix& operator =(const Matrix& other) const
+    {
+      Matrix matrix(other);
+      return other;
+    }
+
     // Member functions
     size_t getRows()
     {
@@ -131,7 +137,7 @@ namespace la {
     // Matrix transform
     virtual Matrix inverse() const;
     virtual Matrix transpose() const;
-    virtual Matrix determinant() const;
+    virtual T determinant() const;
 
     // Other Matrix operations
     void indentity()
