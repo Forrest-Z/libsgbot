@@ -47,6 +47,7 @@ namespace la {
       {
         delete[] matrix_[i];
       }
+      delete[] matrix_;
       matrix_ = NULL;
     }
 
@@ -77,6 +78,7 @@ namespace la {
       {
         delete[] matrix_[i];
       }
+      delete[] matrix_;
       matrix_ = NULL;
 
       matrix_ = new T*[rows_];
@@ -142,6 +144,12 @@ namespace la {
       }
     }
   
+  protected:
+    T** getMatrix() const
+    {
+      return matrix_;
+    }
+
   private:
     T** matrix_;
     size_t rows_, columns_;

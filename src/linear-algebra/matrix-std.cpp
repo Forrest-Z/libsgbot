@@ -271,10 +271,99 @@ namespace la {
     return true;
   }
 
+  // Guass-Jordan method
   template <typename T, size_t R, size_t C>
   Matrix<T, R, C> Matrix<T, R, C>::inverse() const
   {
+    Matrix<T, R, C> result(*this);
 
+    assert(result.getRows() == result.getColumns());
+
+    size_t dimensions = result.getRows();
+    T** matrix = result.getMatrix();
+
+    double** temp = new double*[dimensions];
+    for(int i = 0; i < dimensions; i++)
+    {
+      temp[i] = new double[dimensions * 2];
+    }
+
+    // Copy input matrix and construct a augmented matrix
+    for(int i = 0; i < dimensions; i++)
+    {
+      for(int j = 0; j < (dimensions * 2); j++)
+      {
+        if(j < dimensions)
+        {
+          temp[i][j] = static_cast<double>(matrix[i][j]);
+        }
+        else if(j == (i + dimensions))
+        {
+          temp[i][j] = 1.0f;
+        }
+        else
+        {
+          temp[i][j] = 0.0f;
+        }
+      }
+    }
+
+    // Exchange two rows
+    for(int i = (dimensions - 1); i > 0; i--)
+    {
+      if(temp[i - 1][0] < temp[i][0])
+      {
+        for(int j = 0; j < (dimensions * 2); j++)
+        {
+          double element = temp[i][j];
+          temp[i][j] = temp[i - 1][j];
+          temp[i - 1][j] = element;
+        }
+      }
+    }
+
+    // Reducing to diagonal matrix
+    for(int i = 0; i < dimensions; i++)
+    {
+      for(int j = 0; j < (dimensions * 2); j++)
+      {
+        if(j != 0)
+        {
+          double div = temp[j][i] / temp[i][i];
+          for(int k = 0; k < (dimensions * 2); k++)
+          {
+            temp[j][k] -= temp[i][k] * div;
+          }
+        }
+      }
+    }
+
+    // Reducing to unit matrix
+    for(int i = 0; i < dimensions; i++)
+    {
+      double element = temp[i][i];
+      for(int j = 0; j < (dimensions * 2); j++)
+      {
+        temp[i][j] /= element;
+      }
+    }
+
+    // Copy right part back to input matrix
+    for(int i = 0; i < dimensions; i++)
+    {
+      for(int j = 0; j < dimensions; j++)
+      {
+        matrix[i][j] = static_cast<T>(temp[i][dimensions + j]);
+      }
+    }
+
+    for(int i = 0; i < dimensions; i++)
+    {
+      delete[] temp[i];
+    }
+    delete[] temp;
+
+    return result;
   }
 
   template <typename T, size_t R, size_t C>
