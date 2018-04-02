@@ -1,10 +1,8 @@
-SET(HECTOR_SRCS
-  map/gridmap/base.cpp
-  map/occupancy-gridmap/base.cpp
-  map/occupancy-gridmap/optimizer.cpp
-  slam/processor.cpp
-  slam/scanmatcher.cpp
-  mapping.cpp
+SGBOT_ADD_SRCS(
+  slam/hector/map/gridmap/base.cpp
+  slam/hector/map/occupancy-gridmap/base.cpp
+  slam/hector/map/occupancy-gridmap/optimizer.cpp
+  slam/hector/slam/processor.cpp
+  slam/hector/slam/scanmatcher.cpp
+  slam/hector/mapping.cpp
 )
-
-ADD_LIBRARY(hector ${HECTOR_SRCS})

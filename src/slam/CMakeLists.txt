@@ -1,10 +1,1 @@
 ADD_SUBDIRECTORY(hector)
-
-SET(SLAM_SRCS
-)
-
-ADD_LIBRARY(slam ${SLAM_SRCS})
-
-TARGET_LINK_LIBRARIES(slam
-  hector
-)

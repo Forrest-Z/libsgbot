@@ -1,6 +1,4 @@
-SET(LA_SRCS
-  matrixbase-std.cpp
-  matrixbase-neon.cpp
+SGBOT_ADD_SRCS(
+  linear-algebra/matrixbase-std.cpp
+  linear-algebra/matrixbase-neon.cpp
 )
-
-ADD_LIBRARY(linear-algebra ${LA_SRCS})

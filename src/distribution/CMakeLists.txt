@@ -1,8 +1,6 @@
-SET(DISTR_SRCS
-  gaussian-std.cpp
-  functions-std.cpp
-  gaussian-neon.cpp
-  functions-neon.cpp
+SGBOT_ADD_SRCS(
+  distribution/gaussian-std.cpp
+  distribution/functions-std.cpp
+  distribution/gaussian-neon.cpp
+  distribution/functions-neon.cpp
 )
-
-ADD_LIBRARY(distribution ${DISTR_SRCS})

@@ -1,6 +1,4 @@
-SET(STDM_SRCS
-  math-std.cpp
-  math-neon.cpp
+SGBOT_ADD_SRCS(
+  std-math/math-std.cpp
+  std-math/math-neon.cpp
 )
-
-ADD_LIBRARY(std-math ${STDM_SRCS})

@@ -10,6 +10,8 @@
 #define _LA_VECTOR_H_
 
 #include <common/exception.h>
+#include <linear-algebra/vectorbase.h>
+#include <vector>
 
 namespace sgbot {
 namespace la {
@@ -29,7 +31,7 @@ namespace la {
   public:
     // Define Constructors
     Vector()
-      :items_(I)
+      : base_(I)
     {}
 
     // Define Destructor
@@ -41,7 +43,12 @@ namespace la {
     // Member functions
     
     size_t getItemCount() {
-      return items_;
+      
+    }
+
+    virtual void resize()
+    {
+
     }
 
     // Copy operator
@@ -81,8 +88,7 @@ namespace la {
     virtual Vector cross(const Vector& vector) const;
     
   private:
-    T vector_[I];
-    size_t items_;
+    VectorBase base_;
   
   }; // class Vector
 

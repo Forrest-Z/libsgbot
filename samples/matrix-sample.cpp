@@ -38,10 +38,5 @@ int main(int argc,char* argv[])
     std::cout << "x2: " << (a * 2);
     std::cout << "/2: " << (a / 2);
 
-    std::cout << "multi: " << std::fixed <<std::setprecision(1) << (a * c);
-//
-//    matrix+=matrix;
-//    displayM(matrix);
-//    matrix-=matrix;
-//    displayM(matrix);
+    std::cout << "multi: " << std::fixed << std::setprecision(1) << (a * c);
 }

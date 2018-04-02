@@ -1,6 +1,4 @@
-SET(TF_SRCS
-  transform2d-std.cpp
-  transform2d-neon.cpp
+SGBOT_ADD_SRCS(
+  transform/transform2d-std.cpp
+  transform/transform2d-neon.cpp
 )
-
-ADD_LIBRARY(transform ${TF_SRCS})
