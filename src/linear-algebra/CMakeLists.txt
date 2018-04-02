@@ -1,6 +1,6 @@
 SET(LA_SRCS
-  matrix-std.cpp
-  matrix-neon.cpp
+  matrixbase-std.cpp
+  matrixbase-neon.cpp
 )
 
 ADD_LIBRARY(linear-algebra ${LA_SRCS})

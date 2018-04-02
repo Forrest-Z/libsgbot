@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <vector>
 #include <common/exception.h>
+#include <linear-algebra/matrixbase.h>
 
 namespace sgbot {
 namespace la {
@@ -25,141 +26,192 @@ namespace la {
     virtual ~MatrixException() throw() {}
   };
   */
-  
   template <typename T, size_t R, size_t C>
   class Matrix {
   public:
     // Define Constructors
     Matrix()
-      : rows_(R), columns_(C)
     {
-      matrix_ = new T*[rows_];
-      for(int i = 0; i < rows_; i++)
-      {
-        matrix_[i] = new T[columns_];
-      }
+      base_ = MatrixBase(R, C);
     }
 
     // Define Destructor
     virtual ~Matrix()
+    {}
+
+    // Member functions
+    virtual const size_t getRows() const
     {
-      for(int i = 0; i < rows_; i++)
-      {
-        delete[] matrix_[i];
-      }
-      delete[] matrix_;
-      matrix_ = NULL;
+      return base_.getRows();
+    }
+    
+    virtual const size_t getColumns() const
+    {
+      return base_.getColumns();
+    }
+
+    virtual void resize(size_t rows, size_t columns)
+    {
+      base_.resize(rows, columns);
     }
 
     // Copy constructor
     Matrix(const Matrix& other)
     {
-      resize(other.getRows(), other.getColumns());
-
-      for(int i = 0; i < rows_; i++)
-        for(int j = 0; j < columns_; j++)
-          matrix_[i][j] = other(i, j);
+      base_ = other.base_;
     }
 
-    Matrix& operator =(const Matrix& other) const
+    Matrix& operator =(const Matrix<T, R, C>& other) const
     {
       Matrix matrix(other);
       return matrix;
     }
 
-    // Member functions
-    size_t getRows()
-    {
-      return rows_;
-    }
-    
-    size_t getColumns()
-    {
-      return columns_;
-    }
-
-    void resize(size_t rows, size_t columns)
-    {
-      for(int i = 0; i < rows_; i++)
-      {
-        delete[] matrix_[i];
-      }
-      delete[] matrix_;
-      matrix_ = NULL;
-
-      matrix_ = new T*[rows_];
-      for(int i = 0; i < rows_; i++)
-      {
-        matrix_[i] = new T[columns_];
-      }
-
-      rows_ = rows;
-      columns_ = columns;
-    }
-
     // Copy operator
     virtual T& operator()(size_t row, size_t column)
     {
-      assert(row < rows_);
-      assert(column < columns_);
-
-      return matrix_[row][column];
+      return static_cast<T>(base_(row, column));
     }
     
     virtual T operator()(size_t row, size_t column) const
     {
-      assert(row < rows_);
-      assert(column < columns_);
-
-      return matrix_[row][column];
+      T result = static_cast<T>(base_(row, column));
+      return result;
     }
 
     // Matrix scalar operators
-    virtual Matrix<T, R, C>& operator +=(const T scalar);
-    virtual Matrix<T, R, C>& operator -=(const T scalar);
-    virtual Matrix<T, R, C>& operator *=(const T scalar);
-    virtual Matrix<T, R, C>& operator /=(const T scalar);
+    virtual Matrix& operator +=(const T scalar)
+    {
+      double d = static_cast<T>(scalar);
+      base_ += d;
+    }
 
-    virtual Matrix operator +(const T scalar) const;
-    virtual Matrix operator -(const T scalar) const;
-    virtual Matrix operator *(const T scalar) const;
-    virtual Matrix operator /(const T scalar) const;
+    virtual Matrix& operator -=(const T scalar)
+    {
+      double d = static_cast<T>(scalar);
+      base_ -= d;
+    }
+
+    virtual Matrix& operator *=(const T scalar)
+    {
+      double d = static_cast<T>(scalar);
+      base_ *= d;
+    }
+
+    virtual Matrix& operator /=(const T scalar)
+    {
+      double d = static_cast<T>(scalar);
+      base_ /= d;
+    }
+
+    virtual Matrix operator +(const T scalar) const
+    {
+      Matrix m(*this);
+      double d = static_cast<T>(scalar);
+      m = m + d;
+
+      return m;
+    }
+
+    virtual Matrix operator -(const double scalar) const
+    {
+      Matrix m(*this);
+      double d = static_cast<T>(scalar);
+      m = m - d;
+
+      return m;
+    }
+
+    virtual Matrix operator *(const double scalar) const
+    {
+      Matrix m(*this);
+      double d = static_cast<T>(scalar);
+      m = m * d;
+
+      return m;
+    }
+
+    virtual Matrix operator /(const double scalar) const
+    {
+      Matrix m(*this);
+      double d = static_cast<T>(scalar);
+      m = m / d;
+
+      return m;
+    }
 
     // Matrix math operators
-    virtual Matrix<T, R, C>& operator +=(const Matrix& matrix);
-    virtual Matrix<T, R, C>& operator -=(const Matrix& matrix);
+    virtual Matrix& operator +=(const Matrix<T, R, C>& matrix)
+    {
+      base_ += matrix.base_;
+    }
 
-    virtual Matrix operator +(const Matrix& matrix) const;
-    virtual Matrix operator -(const Matrix& matrix) const;
-    virtual Matrix operator *(const Matrix& matrix) const;
-    virtual bool operator ==(const Matrix& matrix) const;
+    virtual Matrix& operator -=(const Matrix<T, R, C>& matrix)
+    {
+      base_ += matrix.base_;
+    }
+
+    virtual Matrix operator +(const Matrix<T, R, C>& matrix) const
+    {
+      Matrix m(*this);
+      m = m + matrix;
+
+      return m;
+    }
+
+    virtual Matrix operator -(const Matrix<T, R, C>& matrix) const
+    {
+      Matrix m(*this);
+      m = m - matrix;
+
+      return m;
+    }
+
+    virtual Matrix operator *(const Matrix<T, R, C>& matrix) const
+    {
+      Matrix m(*this);
+      m = m - matrix;
+
+      return m;
+    }
+
+    virtual bool operator ==(const Matrix<T, R, C>& matrix) const
+    {
+      return (base_ == matrix.base_);
+    }
 
     // Matrix transform
-    virtual Matrix inverse() const;
-    virtual Matrix transpose() const;
-    virtual T determinant() const;
+    virtual Matrix inverse() const
+    {
+      Matrix m(*this);
+      m.inverse();
+
+      return m;
+    }
+
+    virtual Matrix transpose() const
+    {
+      Matrix m(*this);
+      m.transpose();
+
+      return m;
+    }
+
+    virtual T determinant() const
+    {
+      double result;
+      result = base_.determinant();
+      return static_cast<T>(result);
+    }
 
     // Other Matrix operations
-    void indentity()
+    virtual void indentity()
     {
-      assert(rows_ == columns_);
-
-      for(int i = 0; i < rows_; i++)
-      {
-        matrix_[i][i] = static_cast<T>(1.0f);
-      }
+      base_.indentity();
     }
   
   protected:
-    T** getMatrix() const
-    {
-      return matrix_;
-    }
-
-  private:
-    T** matrix_;
-    size_t rows_, columns_;
-  
+    MatrixBase base_;
   }; // class Matrix
 
 }  // namespace la

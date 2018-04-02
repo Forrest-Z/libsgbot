@@ -1,4 +1,4 @@
-/* Created linear-algebra/matrix-std.cpp by CybernikLee
+/* Created linear-algebra/matrixbase-std.cpp by CybernikLee
  *
  * E-Mail <cyberniklee@gmail.com>
  *
@@ -8,15 +8,15 @@
 
 #ifdef _USE_STD_ARITHMETIC_
 
-#include <linear-algebra/matrix.h>
+#include <linear-algebra/matrixbase.h>
 #include <std-math/math.h>
 
 namespace sgbot {
 namespace la {
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C>& Matrix<T, R, C>::operator +=(const T scalar)
+
+  MatrixBase& MatrixBase::operator +=(const double scalar)
   {
-    Matrix<T, R, C>& matrix = *this;
+    MatrixBase& matrix = *this;
 
     for(int i = 0; i < matrix.getRows(); i++)
     {
@@ -29,10 +29,10 @@ namespace la {
     return matrix;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C>& Matrix<T, R, C>::operator -=(const T scalar)
+
+  MatrixBase& MatrixBase::operator -=(const double scalar)
   {
-    Matrix<T, R, C>& matrix = *this;
+    MatrixBase& matrix = *this;
 
     for(int i = 0; i < matrix.getRows(); i++)
     {
@@ -45,10 +45,10 @@ namespace la {
     return matrix;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C>& Matrix<T, R, C>::operator *=(const T scalar)
+
+  MatrixBase& MatrixBase::operator *=(const double scalar)
   {
-    Matrix<T, R, C>& matrix = *this;
+    MatrixBase& matrix = *this;
 
     for(int i = 0; i < matrix.getRows(); i++)
     {
@@ -61,10 +61,10 @@ namespace la {
     return matrix;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C>& Matrix<T, R, C>::operator /=(const T scalar)
+
+  MatrixBase& MatrixBase::operator /=(const double scalar)
   {
-    Matrix<T, R, C>& matrix = *this;
+    MatrixBase& matrix = *this;
 
     for(int i = 0; i < matrix.getRows(); i++)
     {
@@ -77,10 +77,10 @@ namespace la {
     return matrix;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::operator +(const T scalar) const
+
+  MatrixBase MatrixBase::operator +(const double scalar) const
   {
-    Matrix<T, R, C> matrix(*this);
+    MatrixBase matrix(*this);
 
     for(int i = 0; i < matrix.getRows(); i++)
     {
@@ -93,10 +93,10 @@ namespace la {
     return matrix;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::operator -(const T scalar) const
+
+  MatrixBase MatrixBase::operator -(const double scalar) const
   {
-    Matrix<T, R, C> matrix(*this);
+    MatrixBase matrix(*this);
 
     for(int i = 0; i < matrix.getRows(); i++)
     {
@@ -109,10 +109,10 @@ namespace la {
     return matrix;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::operator *(const T scalar) const
+
+  MatrixBase MatrixBase::operator *(const double scalar) const
   {
-    Matrix<T, R, C> matrix(*this);
+    MatrixBase matrix(*this);
 
     for(int i = 0; i < matrix.getRows(); i++)
     {
@@ -125,10 +125,10 @@ namespace la {
     return matrix;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::operator /(const T scalar) const
+
+  MatrixBase MatrixBase::operator /(const double scalar) const
   {
-    Matrix<T, R, C> matrix(*this);
+    MatrixBase matrix(*this);
 
     for(int i = 0; i < matrix.getRows(); i++)
     {
@@ -141,10 +141,10 @@ namespace la {
     return matrix;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C>& Matrix<T, R, C>::operator +=(const Matrix& matrix)
+
+  MatrixBase& MatrixBase::operator +=(const MatrixBase& matrix)
   {
-    Matrix<T, R, C>& result = *this;
+    MatrixBase& result = *this;
 
     assert(result.getRows() == matrix.getRows());
     assert(result.getColumns() == matrix.getColumns());
@@ -160,10 +160,10 @@ namespace la {
     return result;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C>& Matrix<T, R, C>::operator -=(const Matrix& matrix)
+
+  MatrixBase& MatrixBase::operator -=(const MatrixBase& matrix)
   {
-    Matrix<T, R, C>& result = *this;
+    MatrixBase& result = *this;
 
     assert(result.getRows() == matrix.getRows());
     assert(result.getColumns() == matrix.getColumns());
@@ -179,10 +179,10 @@ namespace la {
     return result;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::operator +(const Matrix& matrix) const
+
+  MatrixBase MatrixBase::operator +(const MatrixBase& matrix) const
   {
-    Matrix<T, R, C> result(*this);
+    MatrixBase result(*this);
 
     assert(result.getRows() == matrix.getRows());
     assert(result.getColumns() == matrix.getColumns());
@@ -198,10 +198,10 @@ namespace la {
     return result;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::operator -(const Matrix& matrix) const
+
+  MatrixBase MatrixBase::operator -(const MatrixBase& matrix) const
   {
-    Matrix<T, R, C> result(*this);
+    MatrixBase result(*this);
 
     assert(result.getRows() == matrix.getRows());
     assert(result.getColumns() == matrix.getColumns());
@@ -217,14 +217,14 @@ namespace la {
     return result;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::operator *(const Matrix& matrix) const
+
+  MatrixBase MatrixBase::operator *(const MatrixBase& matrix) const
   {
-    Matrix<T, R, C>& left_mat =*this;
+    MatrixBase left_mat(*this);
 
     assert(left_mat.getColumns() == matrix.getRows());
 
-    Matrix<T, R, C> result;
+    MatrixBase result;
 
     result.resize(left_mat.getRows(), matrix.getColumns());
 
@@ -243,10 +243,10 @@ namespace la {
     return result;
   }
 
-  template <typename T, size_t R, size_t C>
-  bool Matrix<T, R, C>::operator ==(const Matrix& matrix) const
+
+  bool MatrixBase::operator ==(const MatrixBase& matrix) const
   {
-    Matrix<T, R, C> left_mat(*this);
+    MatrixBase left_mat(*this);
 
     if(left_mat.getRows() != matrix.getRows())
     {
@@ -273,18 +273,18 @@ namespace la {
   }
 
   // Guass-Jordan method
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::inverse() const
+
+  MatrixBase MatrixBase::inverse() const
   {
-    Matrix<T, R, C> result(*this);
+    MatrixBase result(*this);
 
     assert(result.getRows() == result.getColumns());
 
     size_t dimensions = result.getRows();
-    T** matrix = result.getMatrix();
+    double** matrix = result.getMatrix();
 
-    double** temp = new double*[dimensions];
-    for(int i = 0; i < dimensions; i++)
+    double** temp = new double*[dimensions * 2];
+    for(int i = 0; i < (dimensions * 2); i++)
     {
       temp[i] = new double[dimensions * 2];
     }
@@ -296,7 +296,7 @@ namespace la {
       {
         if(j < dimensions)
         {
-          temp[i][j] = static_cast<double>(matrix[i][j]);
+          temp[i][j] = matrix[i][j];
         }
         else if(j == (i + dimensions))
         {
@@ -354,7 +354,7 @@ namespace la {
     {
       for(int j = 0; j < dimensions; j++)
       {
-        matrix[i][j] = static_cast<T>(temp[i][dimensions + j]);
+        matrix[i][j] = temp[i][dimensions + j];
       }
     }
 
@@ -367,25 +367,25 @@ namespace la {
     return result;
   }
 
-  template <typename T, size_t R, size_t C>
-  Matrix<T, R, C> Matrix<T, R, C>::transpose() const
+
+  MatrixBase MatrixBase::transpose() const
   {
-    Matrix<T, R, C> result(*this);
+    MatrixBase result(*this);
     result.resize(result.getColumns(), result.getRows());
 
     for(int i = 0; i < result.getRows(); i++)
     {
       for(int j = 0; j < result.getColumns(); j++)
       {
-        result[i][j] = matrix_[j][i];
+        result(i, j) = matrix_[j][i];
       }
     }
 
     return result;
   }
 
-  template <typename T>
-  static T determinantRecuision(int dimensions, T** matrix, T** sub_matrix, T* pre_det)
+
+  static double determinantRecuision(int dimensions, double** matrix, double** sub_matrix, double* pre_det)
   {
     if(dimensions == 2)
     {
@@ -416,15 +416,14 @@ namespace la {
     return *pre_det;
   }
 
-  template <typename T, size_t R, size_t C>
-  T Matrix<T, R, C>::determinant() const
+
+  double MatrixBase::determinant() const
   {
     assert(rows_ == columns_);
 
     size_t dimensions = rows_;
 
-    T* det = new T;
-    *det = 0;
+    double det = 0.0f;
 
     double** temp = new double*[dimensions];
     for(int i = 0; i < dimensions; i++)
@@ -432,9 +431,7 @@ namespace la {
       temp[i] = new double[dimensions];
     }
 
-    T result = determinantRecuision(dimensions, matrix_, temp, det);
-
-    delete det;
+    double result = determinantRecuision(dimensions, matrix_, temp, &det);
 
     for(int i = 0; i < dimensions; i++)
     {
