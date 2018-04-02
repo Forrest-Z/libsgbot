@@ -123,7 +123,7 @@ namespace la {
       return matrix_[row][column];
     }
     
-    virtual double operator()(size_t row, size_t column) const
+    virtual const double operator()(size_t row, size_t column) const
     {
       assert(row < rows_);
       assert(column < columns_);

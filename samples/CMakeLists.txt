@@ -8,5 +8,5 @@ LINK_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}/src
 )
 
-ADD_EXECUTABLE(linear-algebra-base linear-algebra-base.cpp)
-TARGET_LINK_LIBRARIES(linear-algebra-base sgbot)
+add_executable(matrix-sample matrix-sample.cpp)
+target_link_libraries(matrix-sample sgbot)

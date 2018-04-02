@@ -61,22 +61,21 @@ namespace la {
       base_ = other.base_;
     }
 
-    Matrix& operator =(const Matrix<T, R, C>& other) const
+    Matrix& operator =(const Matrix<T, R, C>& other)
     {
-      Matrix matrix(other);
-      return matrix;
+      *this = other;
+      return *this;
     }
 
     // Copy operator
     virtual T& operator()(size_t row, size_t column)
     {
-      return static_cast<T>(base_(row, column));
+      return base_(row, column);
     }
     
-    virtual T operator()(size_t row, size_t column) const
+    virtual const T operator()(size_t row, size_t column) const
     {
-      T result = static_cast<T>(base_(row, column));
-      return result;
+      return static_cast<T>(base_(row, column));;
     }
 
     // Matrix scalar operators

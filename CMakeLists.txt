@@ -9,5 +9,5 @@ include
 )
 
 ADD_SUBDIRECTORY(src)
-#ADD_SUBDIRECTORY(samples)
+ADD_SUBDIRECTORY(samples)
 #ADD_SUBDIRECTORY(test)
