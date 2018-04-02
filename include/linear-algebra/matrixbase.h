@@ -26,65 +26,41 @@ namespace la {
   };
   */
   
+  typedef std::vector<std::vector<double> > MatrixArray;
+
   class MatrixBase {
   public:
     // Define Constructors
     MatrixBase()
-      : rows_(0), columns_(0), matrix_(NULL)
     {}
 
     MatrixBase(size_t rows, size_t columns)
-      : rows_(rows), columns_(columns)
     {
-      matrix_ = new double*[rows_];
-      for(int i = 0; i < rows_; i++)
-      {
-        matrix_[i] = new double[columns_];
-      }
+      resize(rows, columns);
     }
 
     // Define Destructor
     virtual ~MatrixBase()
-    {
-      for(int i = 0; i < rows_; i++)
-      {
-        delete[] matrix_[i];
-      }
-      delete[] matrix_;
-      matrix_ = NULL;
-    }
+    {}
 
     // Member functions
     virtual const size_t getRows() const
     {
-      return rows_;
+      return matrix_.size();
     }
     
     virtual const size_t getColumns() const
     {
-      return columns_;
+      return matrix_[0].size();
     }
 
     virtual void resize(size_t rows, size_t columns)
     {
-      if(matrix_ != NULL)
-      {
-        for(int i = 0; i < rows_; i++)
-        {
-          delete[] matrix_[i];
-        }
-        delete[] matrix_;
-        matrix_ = NULL;
-      }
-
-      matrix_ = new double*[rows];
+      matrix_.resize(rows);
       for(int i = 0; i < rows; i++)
       {
-        matrix_[i] = new double[columns];
+        matrix_[i].resize(columns);
       }
-
-      rows_ = rows;
-      columns_ = columns;
     }
 
     // Copy constructor
@@ -92,8 +68,8 @@ namespace la {
     {
       this->resize(other.getRows(), other.getColumns());
 
-      for(int i = 0; i < rows_; i++)
-        for(int j = 0; j < columns_; j++)
+      for(int i = 0; i < getRows(); i++)
+        for(int j = 0; j < getColumns(); j++)
           matrix_[i][j] = other(i, j);
     }
 
@@ -106,6 +82,7 @@ namespace la {
       for(int i = 0; i < matrix.getRows(); i++)
         for(int j = 0; j < matrix.getColumns(); j++)
           matrix(i, j) = other(i, j);
+
       return matrix;
     }
 
@@ -118,8 +95,8 @@ namespace la {
 
       this->resize(other.getRows(), other.getColumns());
 
-      for(int i = 0; i < rows_; i++)
-        for(int j = 0; j < columns_; j++)
+      for(int i = 0; i < getRows(); i++)
+        for(int j = 0; j < getColumns(); j++)
           matrix_[i][j] = other(i, j);
 
       return *this;
@@ -128,16 +105,16 @@ namespace la {
     // Copy operator
     virtual double& operator()(size_t row, size_t column)
     {
-      assert(row < rows_);
-      assert(column < columns_);
+      assert(row < getRows());
+      assert(column < getColumns());
 
       return matrix_[row][column];
     }
     
     virtual const double operator()(size_t row, size_t column) const
     {
-      assert(row < rows_);
-      assert(column < columns_);
+      assert(row < getRows());
+      assert(column < getColumns());
 
       return matrix_[row][column];
     }
@@ -170,24 +147,22 @@ namespace la {
     // Other Matrix operations
     virtual void indentity()
     {
-      assert(rows_ == columns_);
+      assert(getRows() == getColumns());
 
-      for(int i = 0; i < rows_; i++)
+      for(int i = 0; i < getRows(); i++)
       {
         matrix_[i][i] = 1.0f;
       }
     }
   
   protected:
-    double** getMatrix() const
+    MatrixArray& getMatrix()
     {
       return matrix_;
     }
 
   private:
-    double** matrix_;
-    size_t rows_, columns_;
-  
+    MatrixArray matrix_;
   }; // class MatrixBase
 
 }  // namespace la

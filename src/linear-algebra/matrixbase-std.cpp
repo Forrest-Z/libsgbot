@@ -281,12 +281,13 @@ namespace la {
     assert(result.getRows() == result.getColumns());
 
     size_t dimensions = result.getRows();
-    double** matrix = result.getMatrix();
+    MatrixArray& matrix = result.getMatrix();
 
-    double** temp = new double*[dimensions * 2];
+    MatrixArray temp;
+    temp.resize(dimensions * 2);
     for(int i = 0; i < (dimensions * 2); i++)
     {
-      temp[i] = new double[dimensions * 2];
+      temp[i].resize(dimensions * 2);
     }
 
     // Copy input matrix and construct a augmented matrix
@@ -328,7 +329,7 @@ namespace la {
     {
       for(int j = 0; j < (dimensions * 2); j++)
       {
-        if(j != 0)
+        if(j != i)
         {
           double div = temp[j][i] / temp[i][i];
           for(int k = 0; k < (dimensions * 2); k++)
@@ -358,20 +359,16 @@ namespace la {
       }
     }
 
-    for(int i = 0; i < dimensions; i++)
-    {
-      delete[] temp[i];
-    }
-    delete[] temp;
-
     return result;
   }
 
 
   MatrixBase MatrixBase::transpose() const
   {
-    MatrixBase result(*this);
-    result.resize(result.getColumns(), result.getRows());
+    assert(this->getRows() > 0);
+    assert(this->getColumns() > 0);
+
+    MatrixBase result(this->getColumns(), this->getRows());
 
     for(int i = 0; i < result.getRows(); i++)
     {
@@ -385,7 +382,7 @@ namespace la {
   }
 
 
-  static double determinantRecuision(int dimensions, double** matrix, double** sub_matrix, double* pre_det)
+  static double determinantRecuision(int dimensions, const MatrixArray& matrix, MatrixArray& sub_matrix, double* pre_det)
   {
     if(dimensions == 2)
     {
@@ -419,25 +416,20 @@ namespace la {
 
   double MatrixBase::determinant() const
   {
-    assert(rows_ == columns_);
+    assert(getRows() == getColumns());
 
-    size_t dimensions = rows_;
+    size_t dimensions = getRows();
 
     double det = 0.0f;
 
-    double** temp = new double*[dimensions];
+    MatrixArray temp;
+    temp.resize(dimensions);
     for(int i = 0; i < dimensions; i++)
     {
-      temp[i] = new double[dimensions];
+      temp[i].resize(dimensions);
     }
 
     double result = determinantRecuision(dimensions, matrix_, temp, &det);
-
-    for(int i = 0; i < dimensions; i++)
-    {
-      delete[] temp[i];
-    }
-    delete[] temp;
 
     return result;
   }

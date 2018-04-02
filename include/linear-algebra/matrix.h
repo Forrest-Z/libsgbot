@@ -60,6 +60,11 @@ namespace la {
       base_ = other.base_;
     }
 
+    Matrix(const MatrixBase& base)
+    {
+      base_ = base;
+    }
+
     Matrix& operator =(const Matrix<T, R, C>& other)
     {
       *this = other;
@@ -104,38 +109,26 @@ namespace la {
 
     virtual Matrix operator +(const T scalar) const
     {
-      Matrix m(*this);
       double d = static_cast<T>(scalar);
-      m = m + d;
-
-      return m;
+      return Matrix(base_ + d);
     }
 
     virtual Matrix operator -(const double scalar) const
     {
-      Matrix m(*this);
       double d = static_cast<T>(scalar);
-      m = m - d;
-
-      return m;
+      return Matrix(base_ - d);
     }
 
     virtual Matrix operator *(const double scalar) const
     {
-      Matrix m(*this);
       double d = static_cast<T>(scalar);
-      m = m * d;
-
-      return m;
+      return Matrix(base_ * d);
     }
 
     virtual Matrix operator /(const double scalar) const
     {
-      Matrix m(*this);
       double d = static_cast<T>(scalar);
-      m = m / d;
-
-      return m;
+      return Matrix(base_ / d);
     }
 
     // Matrix math operators
@@ -151,26 +144,17 @@ namespace la {
 
     virtual Matrix operator +(const Matrix<T, R, C>& matrix) const
     {
-      Matrix m(*this);
-      m = m + matrix;
-
-      return m;
+      return Matrix(base_ + matrix.base_);
     }
 
     virtual Matrix operator -(const Matrix<T, R, C>& matrix) const
     {
-      Matrix m(*this);
-      m = m - matrix;
-
-      return m;
+      return Matrix(base_ - matrix.base_);
     }
 
     virtual Matrix operator *(const Matrix<T, R, C>& matrix) const
     {
-      Matrix m(*this);
-      m = m - matrix;
-
-      return m;
+      return Matrix(base_ * matrix.base_);
     }
 
     virtual bool operator ==(const Matrix<T, R, C>& matrix) const
@@ -181,18 +165,12 @@ namespace la {
     // Matrix transform
     virtual Matrix inverse() const
     {
-      Matrix m(*this);
-      m.inverse();
-
-      return m;
+      return Matrix(base_.inverse());
     }
 
     virtual Matrix transpose() const
     {
-      Matrix m(*this);
-      m.transpose();
-
-      return m;
+      return Matrix(base_.transpose());
     }
 
     virtual T determinant() const
@@ -215,6 +193,7 @@ namespace la {
   template <typename T, size_t R, size_t C>
   std::ostream& operator <<(std::ostream& output, const Matrix<T, R, C>& matrix)
   {
+    output << std::endl;
     output << "[" << std::endl;
 
     for(int i = 0; i < matrix.getRows(); i++)
@@ -223,7 +202,7 @@ namespace la {
       {
         output << " " << matrix(i, j);
       }
-      output << " " << std::endl << std::endl;
+      output << " " << std::endl;
     }
 
     output << "]" << std::endl;
