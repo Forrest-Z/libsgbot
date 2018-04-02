@@ -48,6 +48,7 @@ void initialM(sgbot::la::MatrixBase& matrix){
     }
 }
 int main(int argc,char* argv[]){
+/*
     sgbot::la::MatrixBase matrix(rows,column);
     printf("initial matrix\n");
     initialM(matrix);
@@ -68,9 +69,18 @@ int main(int argc,char* argv[]){
     end_time = clock();
     duration = static_cast<double>(end_time - begin_time) ;
     std::cout << "determinant time = "<< duration<<std::endl;
+*/
 
-    sgbot::la::Matrix<double, 3, 3> m;
-    m(3, 3) = 1.3f;
+    sgbot::la::Matrix<double, 3, 3> a;
+    a(2, 2) = 1.3f;
+    
+    std::cout << a;
+
+    std::cout << a(2, 2) << std::endl;
+
+    sgbot::la::Matrix<double, 3, 3> b = a;
+
+    std::cout << b;
 //
 //    matrix+=matrix;
 //    displayM(matrix);

@@ -67,17 +67,20 @@ namespace la {
 
     virtual void resize(size_t rows, size_t columns)
     {
-      for(int i = 0; i < rows_; i++)
+      if(matrix_ != NULL)
       {
-        delete[] matrix_[i];
+        for(int i = 0; i < rows_; i++)
+        {
+          delete[] matrix_[i];
+        }
+        delete[] matrix_;
+        matrix_ = NULL;
       }
-      delete[] matrix_;
-      matrix_ = NULL;
 
-      matrix_ = new double*[rows_];
-      for(int i = 0; i < rows_; i++)
+      matrix_ = new double*[rows];
+      for(int i = 0; i < rows; i++)
       {
-        matrix_[i] = new double[columns_];
+        matrix_[i] = new double[columns];
       }
 
       rows_ = rows;
@@ -103,13 +106,21 @@ namespace la {
       for(int i = 0; i < matrix.getRows(); i++)
         for(int j = 0; j < matrix.getColumns(); j++)
           matrix(i, j) = other(i, j);
-
       return matrix;
     }
 
     MatrixBase& operator =(const MatrixBase& other)
     {
-      *this = other;
+      if(this == &other)
+      {
+        return *this;
+      }
+
+      this->resize(other.getRows(), other.getColumns());
+
+      for(int i = 0; i < rows_; i++)
+        for(int j = 0; j < columns_; j++)
+          matrix_[i][j] = other(i, j);
 
       return *this;
     }

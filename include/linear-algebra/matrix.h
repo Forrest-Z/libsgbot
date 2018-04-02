@@ -31,9 +31,8 @@ namespace la {
   public:
     // Define Constructors
     Matrix()
-    {
-      base_ = MatrixBase(R, C);
-    }
+      : base_(MatrixBase(R, C))
+    {}
 
     // Define Destructor
     virtual ~Matrix()
@@ -212,6 +211,23 @@ namespace la {
   protected:
     MatrixBase base_;
   }; // class Matrix
+
+  template <typename T, size_t R, size_t C>
+  std::ostream& operator <<(std::ostream& output, const Matrix<T, R, C>& matrix)
+  {
+    output << "[" << std::endl;
+
+    for(int i = 0; i < matrix.getRows(); i++)
+    {
+      for(int j = 0; j < matrix.getColumns(); j++)
+      {
+        output << " " << matrix(i, j);
+      }
+      output << " " << std::endl << std::endl;
+    }
+
+    output << "]" << std::endl;
+  }
 
 }  // namespace la
 }  // namespace sgbot
