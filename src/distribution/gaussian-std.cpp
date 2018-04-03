@@ -26,7 +26,7 @@ namespace distr {
   }
 
   template <typename T, size_t Dimension>
-  double Gaussian<T, Dimension>::probability(const Vector<T, Dimension> value)
+  float Gaussian<T, Dimension>::probability(const Vector<T, Dimension> value)
   {
 
   }

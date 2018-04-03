@@ -29,7 +29,7 @@ namespace distr {
 
     virtual bool sample(Vector<T, Dimension>& one_sample);
 
-    virtual double probability(const Vector<T, Dimension> value);
+    virtual float probability(const Vector<T, Dimension> value);
   
   };  // class Gaussian
 }  // namespace distr

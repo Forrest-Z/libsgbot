@@ -36,7 +36,7 @@ namespace distr {
 
     virtual bool sample(Vector<T, Dimension>& one_sample) = 0;
 
-    virtual double probability(const Vector<T, Dimension> value) = 0;
+    virtual float probability(const Vector<T, Dimension> value) = 0;
   
   protected:
 

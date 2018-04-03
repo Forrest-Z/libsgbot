@@ -14,7 +14,7 @@
 namespace sgbot {
 namespace la {
 
-  MatrixBase& MatrixBase::operator +=(const double scalar)
+  MatrixBase& MatrixBase::operator +=(const float scalar)
   {
     MatrixBase& matrix = *this;
 
@@ -30,7 +30,7 @@ namespace la {
   }
 
 
-  MatrixBase& MatrixBase::operator -=(const double scalar)
+  MatrixBase& MatrixBase::operator -=(const float scalar)
   {
     MatrixBase& matrix = *this;
 
@@ -46,7 +46,7 @@ namespace la {
   }
 
 
-  MatrixBase& MatrixBase::operator *=(const double scalar)
+  MatrixBase& MatrixBase::operator *=(const float scalar)
   {
     MatrixBase& matrix = *this;
 
@@ -62,7 +62,7 @@ namespace la {
   }
 
 
-  MatrixBase& MatrixBase::operator /=(const double scalar)
+  MatrixBase& MatrixBase::operator /=(const float scalar)
   {
     MatrixBase& matrix = *this;
 
@@ -78,7 +78,7 @@ namespace la {
   }
 
 
-  MatrixBase MatrixBase::operator +(const double scalar) const
+  MatrixBase MatrixBase::operator +(const float scalar) const
   {
     MatrixBase matrix(*this);
 
@@ -94,7 +94,7 @@ namespace la {
   }
 
 
-  MatrixBase MatrixBase::operator -(const double scalar) const
+  MatrixBase MatrixBase::operator -(const float scalar) const
   {
     MatrixBase matrix(*this);
 
@@ -110,7 +110,7 @@ namespace la {
   }
 
 
-  MatrixBase MatrixBase::operator *(const double scalar) const
+  MatrixBase MatrixBase::operator *(const float scalar) const
   {
     MatrixBase matrix(*this);
 
@@ -126,7 +126,7 @@ namespace la {
   }
 
 
-  MatrixBase MatrixBase::operator /(const double scalar) const
+  MatrixBase MatrixBase::operator /(const float scalar) const
   {
     MatrixBase matrix(*this);
 
@@ -317,7 +317,7 @@ namespace la {
       {
         for(int j = 0; j < (dimensions * 2); j++)
         {
-          double element = temp[i][j];
+          float element = temp[i][j];
           temp[i][j] = temp[i - 1][j];
           temp[i - 1][j] = element;
         }
@@ -331,7 +331,7 @@ namespace la {
       {
         if(j != i)
         {
-          double div = temp[j][i] / temp[i][i];
+          float div = temp[j][i] / temp[i][i];
           for(int k = 0; k < (dimensions * 2); k++)
           {
             temp[j][k] -= temp[i][k] * div;
@@ -343,7 +343,7 @@ namespace la {
     // Reducing to unit matrix
     for(int i = 0; i < dimensions; i++)
     {
-      double element = temp[i][i];
+      float element = temp[i][i];
       for(int j = 0; j < (dimensions * 2); j++)
       {
         temp[i][j] /= element;
@@ -381,8 +381,7 @@ namespace la {
     return result;
   }
 
-
-  static double determinantRecuision(int dimensions, const MatrixArray& matrix, MatrixArray& sub_matrix, double* pre_det)
+  static float determinantRecuision(int dimensions, const MatrixArray& matrix, MatrixArray& sub_matrix, float* pre_det)
   {
     if(dimensions == 2)
     {
@@ -414,13 +413,13 @@ namespace la {
   }
 
 
-  double MatrixBase::determinant() const
+  float MatrixBase::determinant() const
   {
     assert(getRows() == getColumns());
 
     size_t dimensions = getRows();
 
-    double det = 0.0f;
+    float det = 0.0f;
 
     MatrixArray temp;
     temp.resize(dimensions);
@@ -429,7 +428,7 @@ namespace la {
       temp[i].resize(dimensions);
     }
 
-    double result = determinantRecuision(dimensions, matrix_, temp, &det);
+    float result = determinantRecuision(dimensions, matrix_, temp, &det);
 
     return result;
   }

@@ -14,9 +14,9 @@
 namespace sgbot {
 namespace distr {
 
-  double logit(double p);
+  float logit(float p);
 
-  double logistic(double a);
+  float logistic(float a);
 
 }  // namespace distr
 }  // namespace sgbot

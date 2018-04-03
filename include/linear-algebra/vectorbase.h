@@ -25,7 +25,7 @@ namespace la {
   };
   */
   
-  typedef std::vector<double> VectorArray;
+  typedef std::vector<float> VectorArray;
 
   class VectorBase {
   public:
@@ -63,11 +63,11 @@ namespace la {
     }
 
     // Copy operator
-    virtual double& operator()(size_t index) {
+    virtual float& operator()(size_t index) {
 
     }
     
-    virtual double operator()(size_t index) const {
+    virtual float operator()(size_t index) const {
 
     }
 
@@ -75,11 +75,11 @@ namespace la {
     virtual VectorBase operator -() const;
 
     // Vector scale operators
-    virtual VectorBase& operator *=(const double scalar);
-    virtual VectorBase& operator /=(const double scalar);
+    virtual VectorBase& operator *=(const float scalar);
+    virtual VectorBase& operator /=(const float scalar);
 
-    virtual VectorBase operator *(const double scalar) const;
-    virtual VectorBase operator /(const double scalar) const;
+    virtual VectorBase operator *(const float scalar) const;
+    virtual VectorBase operator /(const float scalar) const;
 
     // Vector math operators
     virtual VectorBase& operator +=(const VectorBase& vector);
@@ -93,9 +93,9 @@ namespace la {
     virtual bool operator !=(const VectorBase& vector) const;
 
     // Vector other operators
-    virtual double length() const;
-    virtual double normalize() const;
-    virtual double dot() const;
+    virtual float length() const;
+    virtual float normalize() const;
+    virtual float dot() const;
     virtual VectorBase cross(const VectorBase& vector) const;
     
   private:

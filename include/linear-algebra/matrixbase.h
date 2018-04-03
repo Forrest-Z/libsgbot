@@ -26,7 +26,7 @@ namespace la {
   };
   */
   
-  typedef std::vector<std::vector<double> > MatrixArray;
+  typedef std::vector<std::vector<float> > MatrixArray;
 
   class MatrixBase {
   public:
@@ -103,7 +103,7 @@ namespace la {
     }
 
     // Copy operator
-    virtual double& operator()(size_t row, size_t column)
+    virtual float& operator()(size_t row, size_t column)
     {
       assert(row < getRows());
       assert(column < getColumns());
@@ -111,7 +111,7 @@ namespace la {
       return matrix_[row][column];
     }
     
-    virtual const double operator()(size_t row, size_t column) const
+    virtual const float operator()(size_t row, size_t column) const
     {
       assert(row < getRows());
       assert(column < getColumns());
@@ -120,15 +120,15 @@ namespace la {
     }
 
     // Matrix scalar operators
-    virtual MatrixBase& operator +=(const double scalar);
-    virtual MatrixBase& operator -=(const double scalar);
-    virtual MatrixBase& operator *=(const double scalar);
-    virtual MatrixBase& operator /=(const double scalar);
+    virtual MatrixBase& operator +=(const float scalar);
+    virtual MatrixBase& operator -=(const float scalar);
+    virtual MatrixBase& operator *=(const float scalar);
+    virtual MatrixBase& operator /=(const float scalar);
 
-    virtual MatrixBase operator +(const double scalar) const;
-    virtual MatrixBase operator -(const double scalar) const;
-    virtual MatrixBase operator *(const double scalar) const;
-    virtual MatrixBase operator /(const double scalar) const;
+    virtual MatrixBase operator +(const float scalar) const;
+    virtual MatrixBase operator -(const float scalar) const;
+    virtual MatrixBase operator *(const float scalar) const;
+    virtual MatrixBase operator /(const float scalar) const;
 
     // Matrix math operators
     virtual MatrixBase& operator +=(const MatrixBase& matrix);
@@ -142,7 +142,7 @@ namespace la {
     // Matrix transform
     virtual MatrixBase inverse() const;
     virtual MatrixBase transpose() const;
-    virtual double determinant() const;
+    virtual float determinant() const;
 
     // Other Matrix operations
     virtual void indentity()

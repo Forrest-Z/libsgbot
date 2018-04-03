@@ -85,49 +85,49 @@ namespace la {
     // Matrix scalar operators
     virtual Matrix& operator +=(const T scalar)
     {
-      double d = static_cast<T>(scalar);
+      float d = static_cast<T>(scalar);
       base_ += d;
     }
 
     virtual Matrix& operator -=(const T scalar)
     {
-      double d = static_cast<T>(scalar);
+      float d = static_cast<T>(scalar);
       base_ -= d;
     }
 
     virtual Matrix& operator *=(const T scalar)
     {
-      double d = static_cast<T>(scalar);
+      float d = static_cast<T>(scalar);
       base_ *= d;
     }
 
     virtual Matrix& operator /=(const T scalar)
     {
-      double d = static_cast<T>(scalar);
+      float d = static_cast<T>(scalar);
       base_ /= d;
     }
 
     virtual Matrix operator +(const T scalar) const
     {
-      double d = static_cast<T>(scalar);
+      float d = static_cast<T>(scalar);
       return Matrix(base_ + d);
     }
 
-    virtual Matrix operator -(const double scalar) const
+    virtual Matrix operator -(const T scalar) const
     {
-      double d = static_cast<T>(scalar);
+      float d = static_cast<T>(scalar);
       return Matrix(base_ - d);
     }
 
-    virtual Matrix operator *(const double scalar) const
+    virtual Matrix operator *(const T scalar) const
     {
-      double d = static_cast<T>(scalar);
+      float d = static_cast<T>(scalar);
       return Matrix(base_ * d);
     }
 
-    virtual Matrix operator /(const double scalar) const
+    virtual Matrix operator /(const T scalar) const
     {
-      double d = static_cast<T>(scalar);
+      float d = static_cast<T>(scalar);
       return Matrix(base_ / d);
     }
 
@@ -175,7 +175,7 @@ namespace la {
 
     virtual T determinant() const
     {
-      double result;
+      float result;
       result = base_.determinant();
       return static_cast<T>(result);
     }

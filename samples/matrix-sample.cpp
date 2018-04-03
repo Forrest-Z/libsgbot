@@ -9,7 +9,7 @@
 
 int main(int argc,char* argv[])
 {
-    sgbot::la::Matrix<double, 3, 3> a;
+    sgbot::la::Matrix<float, 3, 3> a;
     a(0, 0) = 1.0f;
     a(0, 1) = 2.0f;
     a(0, 2) = 3.0f;
@@ -22,13 +22,13 @@ int main(int argc,char* argv[])
     
     std::cout << a;
 
-    sgbot::la::Matrix<double, 3, 3> b = a;
+    sgbot::la::Matrix<float, 3, 3> b = a;
 
     std::cout << b;
 
     std::cout << "det: " << a.determinant() << std::endl;
 
-    sgbot::la::Matrix<double, 3, 3> c = a.inverse();
+    sgbot::la::Matrix<float, 3, 3> c = a.inverse();
     std::cout << "inverse: " << c;
 
     std::cout << "transpose: " << a.transpose();
