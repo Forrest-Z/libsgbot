@@ -14,53 +14,53 @@ namespace math {
 
   int abs(int i);
 
-  double cabs(double a, double b);
+  float cabs(float a, float b);
 
-  double fabs(double x);
+  float fabs(float x);
 
   long labs(long n);
 
-  double exp(double x);
+  float exp(float x);
 
-  double floor(double x);
+  float floor(float x);
 
-  double ceil(double value);
+  float ceil(float value);
 
-  double frexp(double value, int *eptr);
+  float frexp(float value, int *eptr);
 
-  double ldexp(double value, int exp);
+  float ldexp(float value, int exp);
 
-  double log(double x);
+  float log(float x);
 
-  double log10(double x);
+  float log10(float x);
 
-  double pow(double x, double y);
+  float pow(float x, float y);
 
-  double pow10(int p);
+  float pow10(int p);
 
-  double sqrt(double x);
+  float sqrt(float x);
 
-  double acos(double x);
+  float acos(float x);
 
-  double asin(double x);
+  float asin(float x);
 
-  double atan(double x);
+  float atan(float x);
 
-  double atan2(double y, double x);
+  float atan2(float y, float x);
 
-  double cos(double x);
+  float cos(float x);
 
-  double sin(double x);
+  float sin(float x);
 
-  double tan(double x);
+  float tan(float x);
 
-  double cosh(double x);
+  float cosh(float x);
 
-  double sinh(double x);
+  float sinh(float x);
 
-  double tanh(double x);
+  float tanh(float x);
 
-  double hypot(double x, double y);
+  float hypot(float x, float y);
 
 }  // namespace math  
 }  // namespace sgbot

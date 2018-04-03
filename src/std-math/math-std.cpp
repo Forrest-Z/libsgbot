@@ -20,7 +20,7 @@ namespace math {
     return ::abs(i);
   }
 
-  double fabs(double x)
+  float fabs(float x)
   {
     return ::fabs(x);
   }
@@ -30,107 +30,107 @@ namespace math {
     return ::abs(n);
   }
 
-  double exp(double x)
+  float exp(float x)
   {
     return ::exp(x);
   }
 
-  double floor(double x)
+  float floor(float x)
   {
     return ::floor(x);
   }
 
-  double ceil(double value)
+  float ceil(float value)
   {
     return ::ceil(value);
   }
 
-  double frexp(double value, int *eptr)
+  float frexp(float value, int *eptr)
   {
     return ::frexp(value, eptr);
   }
 
-  double ldexp(double value, int exp)
+  float ldexp(float value, int exp)
   {
     return ::ldexp(value, exp);
   }
 
-  double log(double x)
+  float log(float x)
   {
     return ::log(x);
   }
 
-  double log10(double x)
+  float log10(float x)
   {
     return ::log10(x);
   }
 
-  double pow(double x, double y)
+  float pow(float x, float y)
   {
     return ::pow(x, y);
   }
 
-  double pow10(int p)
+  float pow10(int p)
   {
     return ::pow10(p);
   }
 
-  double sqrt(double x)
+  float sqrt(float x)
   {
     return ::sqrt(x);
   }
 
-  double acos(double x)
+  float acos(float x)
   {
     return ::acos(x);
   }
 
-  double asin(double x)
+  float asin(float x)
   {
     return ::asin(x);
   }
 
-  double atan(double x)
+  float atan(float x)
   {
     return ::atan(x);
   }
 
-  double atan2(double y, double x)
+  float atan2(float y, float x)
   {
     return ::atan2(y, x);
   }
 
-  double cos(double x)
+  float cos(float x)
   {
     return ::cos(x);
   }
 
-  double sin(double x)
+  float sin(float x)
   {
     return ::sin(x);
   }
 
-  double tan(double x)
+  float tan(float x)
   {
     return ::tan(x);
   }
 
-  double cosh(double x)
+  float cosh(float x)
   {
     return ::cosh(x);
   }
 
-  double sinh(double x)
+  float sinh(float x)
   {
     return ::sinh(x);
   }
 
-  double tanh(double x)
+  float tanh(float x)
   {
     return ::tanh(x);
   }
 
-  double hypot(double x, double y)
+  float hypot(float x, float y)
   {
     return ::hypot(x, y);
   }

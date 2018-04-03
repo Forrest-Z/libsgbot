@@ -103,7 +103,7 @@ namespace hector {
         }
         else
         {
-          float adjust_factor = 1.0f / sgbot::math::pow(2.0f, (double)i);
+          float adjust_factor = 1.0f / sgbot::math::pow(2.0f, (float)i);
 
           sgbot::sensor::Lidar2D scan_temp;
 
