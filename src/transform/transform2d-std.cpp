@@ -38,8 +38,8 @@ namespace tf {
     float cos_val = sgbot::math::cos(theta_);
     float sin_val = sgbot::math::sin(theta_);
 
-    result.x = x_ * cos_val + y_ * sin_val + point.x;
-    result.y = y_ * cos_val - x_ * sin_val + point.y;
+    result.x = point.x * cos_val - point.y * sin_val + x_;
+    result.y = point.x * sin_val + point.y * cos_val + y_;
 
     return result;
   }

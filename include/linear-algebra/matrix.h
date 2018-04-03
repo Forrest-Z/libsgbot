@@ -72,7 +72,7 @@ namespace la {
 
     Matrix& operator =(const Matrix<T, R, C>& other)
     {
-      *this = other;
+      this->base_ = other.base_;
       return *this;
     }
 
