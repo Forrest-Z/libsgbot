@@ -185,13 +185,14 @@ namespace la {
     {
       base_.indentity();
     }
-  
+
   protected:
     MatrixBase base_;
   }; // class Matrix
 
+
   template <typename T, size_t R, size_t C>
-  std::ostream& operator <<(std::ostream& output, const Matrix<T, R, C>& matrix)
+  inline std::ostream& operator <<(std::ostream& output, const Matrix<T, R, C>& matrix)
   {
     output << std::endl;
     output << "[" << std::endl;
@@ -206,6 +207,8 @@ namespace la {
     }
 
     output << "]" << std::endl;
+
+    return output;
   }
 
 }  // namespace la

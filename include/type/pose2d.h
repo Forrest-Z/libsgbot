@@ -29,15 +29,15 @@ namespace sgbot {
   public:
     float x, y, theta;
   };  // class Pose2D
-/*
-  std::ostream& operator <<(std::ostream& output, const Pose2D& pose)
+
+  inline std::ostream& operator <<(std::ostream& output, const Pose2D& pose)
   {
     output << std::endl;
     output << "[";
-    output << std::fixed << std::setprecision(2) << pose.x << ", " << pose.y << ", " << pose.theta << ", " << std::endl;
+    output << std::fixed << std::setprecision(2) << pose.x << ", " << pose.y << ", " << pose.theta;
     output << "]" << std::endl;
+    return output;
   }
-*/
 
 }  // namespace sgbot
 
