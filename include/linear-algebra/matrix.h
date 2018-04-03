@@ -54,6 +54,11 @@ namespace la {
       base_.resize(rows, columns);
     }
 
+    const MatrixBase& content() const
+    {
+      return base_;
+    }
+
     // Copy constructor
     Matrix(const Matrix& other)
     {
@@ -152,11 +157,6 @@ namespace la {
       return Matrix(base_ - matrix.base_);
     }
 
-    virtual Matrix operator *(const Matrix<T, R, C>& matrix) const
-    {
-      return Matrix(base_ * matrix.base_);
-    }
-
     virtual bool operator ==(const Matrix<T, R, C>& matrix) const
     {
       return (base_ == matrix.base_);
@@ -189,6 +189,12 @@ namespace la {
   protected:
     MatrixBase base_;
   }; // class Matrix
+
+  template <typename T, size_t R0, size_t C0, size_t R1, size_t C1>
+  inline Matrix<T, R0, C1> operator *(const Matrix<T, R0, C0>& lm, const Matrix<T, R1, C1>& rm)
+  {
+    return Matrix<T, R0, C1>(lm.content() * rm.content());
+  }
 
 
   template <typename T, size_t R, size_t C>

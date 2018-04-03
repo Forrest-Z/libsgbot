@@ -220,22 +220,18 @@ namespace la {
 
   MatrixBase MatrixBase::operator *(const MatrixBase& matrix) const
   {
-    MatrixBase left_mat(*this);
+    assert(this->getColumns() == matrix.getRows());
 
-    assert(left_mat.getColumns() == matrix.getRows());
-
-    MatrixBase result;
-
-    result.resize(left_mat.getRows(), matrix.getColumns());
+    MatrixBase result(this->getRows(), matrix.getColumns());
 
     for(int i = 0; i < result.getRows(); i++)
     {
       for(int j = 0; j < result.getColumns(); j++)
       {
         result(i, j) = 0;
-        for(int k = 0; k < left_mat.getColumns(); k++)
+        for(int k = 0; k < this->getColumns(); k++)
         {
-          result(i, j) += left_mat(i, k) * matrix(k, j);
+          result(i, j) += matrix_[i][k] * matrix(k, j);
         }
       }
     }

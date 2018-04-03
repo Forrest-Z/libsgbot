@@ -39,4 +39,21 @@ int main(int argc,char* argv[])
     std::cout << "/2: " << (a / 2);
 
     std::cout << "multi: " << std::fixed << std::setprecision(1) << (a * c);
+
+    sgbot::la::Matrix<float, 3, 4> d;
+
+    d(0, 0) = 1.0f;
+    d(0, 1) = 2.0f;
+    d(0, 2) = 3.0f;
+    d(0, 3) = 3.0f;
+    d(1, 0) = 6.0f;
+    d(1, 1) = 5.0f;
+    d(1, 2) = 4.0f;
+    d(1, 3) = 4.0f;
+    d(2, 0) = 8.0f;
+    d(2, 1) = 7.0f;
+    d(2, 2) = 9.0f;
+    d(2, 3) = 9.0f;
+
+    std::cout << "multi: " << std::fixed << std::setprecision(1) << (a * d);
 }
