@@ -19,50 +19,69 @@ namespace sgbot {
   class Pose2D {
   public:
     Pose2D()
-      : x(point_(0)), y(point_(1)), theta(0)
     {
+      pose_(0) = 0.0f;
+      pose_(1) = 0.0f;
+      pose_(2) = 0.0f;
     }
 
     Pose2D(float px, float py, float ptheta)
-      : x(point_(0)), y(point_(1)), theta(ptheta)
     {
-      x = px;
-      y = py;
+      pose_(0) = px;
+      pose_(1) = py;
+      pose_(2) = ptheta;
     }
     
     virtual ~Pose2D() {}
 
     // Copy constructor
-    Pose2D(const Pose2D& other)
-      : x(point_(0)), y(point_(1))
-    {
-      x = other.x;
-      y = other.y;
-      theta = other.theta;
-    }
-
     Pose2D& operator =(const Pose2D& other)
     {
-      x = other.x;
-      y = other.y;
-      theta = other.theta;
+      pose_(0) = other.x();
+      pose_(1) = other.y();
+      pose_(2) = other.theta();
       return *this;
     }
     
-  public:
-    float& x, y;
-    float theta;
+    float& x()
+    {
+      return pose_(0);
+    }
+
+    const float x() const
+    {
+      return pose_(0);
+    }
+
+    float& y()
+    {
+      return pose_(1);
+    }
+
+    const float y() const
+    {
+      return pose_(1);
+    }
+
+    float& theta()
+    {
+      return pose_(2);
+    }
+
+    const float theta() const
+    {
+      return pose_(2);
+    }
 
   private:
-    sgbot::la::Vector<float, 2> point_;
-
+    sgbot::la::Vector<float, 3> pose_;
   };  // class Pose2D
 
   inline std::ostream& operator <<(std::ostream& output, const Pose2D& pose)
   {
     output << std::endl;
     output << "[";
-    output << std::fixed << std::setprecision(2) << pose.x << ", " << pose.y << ", " << pose.theta;
+    output << std::fixed << std::setprecision(2) << pose.x() << ", " << pose.y() << ", " << pose.theta();
     output << "]" << std::endl;
     return output;
   }

@@ -13,6 +13,8 @@ int main(int argc,char* argv[])
 
     sgbot::Pose2D p1(0.5f, 0.5f, 15.0f);
 
+    std::cout << p1;
+
     sgbot::Pose2D p2 = (tf1 * tf2).transform(p1);
 
     std::cout << p2;

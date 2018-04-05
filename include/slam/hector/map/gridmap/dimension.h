@@ -106,7 +106,7 @@ namespace hector {
 
     bool isPointOutOfMap(const sgbot::Point2D& point) const
     {
-      return ((point.x < 0.0f) || (point.x > x_limit_) || (point.y < 0.0f) || (point.y > y_limit_));
+      return ((point.x() < 0.0f) || (point.x() > x_limit_) || (point.y() < 0.0f) || (point.y() > y_limit_));
     }
 
   protected:

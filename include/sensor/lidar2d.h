@@ -54,8 +54,8 @@ namespace sensor {
     void addPoint(float x, float y)
     {
       sgbot::Point2D point;
-      point.x = x;
-      point.x = y;
+      point.x() = x;
+      point.x() = y;
 
       addPoint(point);
     }

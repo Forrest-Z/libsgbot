@@ -19,14 +19,14 @@ namespace tf {
     sgbot::Pose2D result;
 
     sgbot::Point2D point;
-    point.x = pose.x;
-    point.y = pose.y;
+    point.x() = pose.x();
+    point.y() = pose.y();
     
     point = transform(point);
 
-    result.x = point.x;
-    result.y = point.y;
-    result.theta = pose.theta + theta_;
+    result.x() = point.x();
+    result.y() = point.y();
+    result.theta() = pose.theta() + theta_;
 
     return result;
   }
@@ -38,8 +38,8 @@ namespace tf {
     float cos_val = sgbot::math::cos(theta_);
     float sin_val = sgbot::math::sin(theta_);
 
-    result.x = point.x * cos_val - point.y * sin_val + x_;
-    result.y = point.x * sin_val + point.y * cos_val + y_;
+    result.x() = point.x() * cos_val - point.y() * sin_val + x_;
+    result.y() = point.x() * sin_val + point.y() * cos_val + y_;
 
     return result;
   }

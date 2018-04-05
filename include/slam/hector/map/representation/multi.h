@@ -108,15 +108,15 @@ namespace hector {
           sgbot::sensor::Lidar2D scan_temp;
 
           sgbot::Point2D origin = scan.getOrigin();
-          origin.x *= adjust_factor;
-          origin.y *= adjust_factor;
+          origin.x() *= adjust_factor;
+          origin.y() *= adjust_factor;
           scan_temp.setOrigin(origin);
 
           scan_temp.clear();
           for(int j = 0; j < scan.getCount(); ++j)
           {
             sgbot::Point2D point = scan.getPoint(j);
-            scan_temp.addPoint(point.x * adjust_factor, point.y * adjust_factor);
+            scan_temp.addPoint(point.x() * adjust_factor, point.y() * adjust_factor);
           }
 
           multi_level_scans_[i - 1] = scan_temp;

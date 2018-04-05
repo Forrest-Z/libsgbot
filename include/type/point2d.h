@@ -17,29 +17,52 @@ namespace sgbot {
   class Point2D {
   public:
     Point2D()
-      : x(point_(0)), y(point_(1))
     {
+      point_(0) = 0.0f;
+      point_(1) = 0.0f;
+    }
+
+    Point2D(float px, float py)
+    {
+      point_(0) = px;
+      point_(1) = py;
     }
     
     virtual ~Point2D() {}
    
     // Copy constructor
     Point2D(const Point2D& other)
-      : x(point_(0)), y(point_(1))
     {
-      x = other.x;
-      y = other.y;
+      point_(0) = other.x();
+      point_(1) = other.y();
     }
 
     Point2D& operator =(const Point2D& other)
     {
-      x = other.x;
-      y = other.y;
+      point_(0) = other.x();
+      point_(1) = other.y();
       return *this;
     }
-    
-  public:
-    float& x, y;
+
+    float& x()
+    {
+      return point_(0);
+    }
+
+    const float x() const
+    {
+      return point_(0);
+    }
+
+    float& y()
+    {
+      return point_(1);
+    }
+
+    const float y() const
+    {
+      return point_(1);
+    }
 
   private:
     sgbot::la::Vector<float, 2> point_;
