@@ -1,4 +1,4 @@
-/* Created linear-algebra/matrix-neon.cpp by CybernikLee
+/* Created linear-algebra/vectorbase-neon.cpp by CybernikLee
  *
  * E-Mail <cyberniklee@gmail.com>
  *
@@ -8,7 +8,7 @@
 
 #ifdef _USE_ARM_NEON_
 
-#include <linear-algebra/matrix.h>
+#include <linear-algebra/vectorbase.h>
 
 namespace sgbot {
 namespace la {

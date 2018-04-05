@@ -12,6 +12,7 @@
 #include <common/exception.h>
 #include <linear-algebra/vectorbase.h>
 #include <vector>
+#include <iomanip>
 
 namespace sgbot {
 namespace la {
@@ -38,59 +39,150 @@ namespace la {
     virtual ~Vector() {}
 
     // Copy constructor
-    Vector(const Vector& vector) {}
-
-    // Member functions
-    
-    size_t getItemCount() {
-      
+    Vector(const Vector& other)
+    {
+      base_ = other.base_;
     }
 
-    virtual void resize()
+    Vector(const VectorBase& base)
     {
+      base_ = base;
+    }
 
+    Vector& operator =(const Vector<T, I>& other)
+    {
+      this->base_ = other.base_;
+      return *this;
+    }
+
+    // Member functions
+    virtual const size_t size() const
+    {
+      return base_.size();
+    }
+
+    virtual void resize(size_t items)
+    {
+      return base_.resize(items);
+    }
+
+    const VectorBase& content() const
+    {
+      return base_;
     }
 
     // Copy operator
-    virtual T& operator()(size_t index) {
-
+    virtual T& operator()(size_t index)
+    {
+      return base_(index);
     }
     
-    virtual T operator()(size_t index) const {
-
+    virtual T operator()(size_t index) const
+    {
+      return static_cast<T>(base_(index));
     }
 
     // Vector monocular operators
-    virtual Vector operator -() const;
+    virtual Vector operator -() const
+    {
+      return Vector(-base_);
+    }
 
     // Vector scale operators
-    virtual Vector<T, I>& operator *=(const T scalar);
-    virtual Vector<T, I>& operator /=(const T scalar);
+    virtual Vector& operator *=(const T scalar)
+    {
+      float d = static_cast<T>(scalar);
+      base_ *= d;
+    }
 
-    virtual Vector operator *(const T scalar) const;
-    virtual Vector operator /(const T scalar) const;
+    virtual Vector& operator /=(const T scalar)
+    {
+      float d = static_cast<T>(scalar);
+      base_ /= d;
+    }
+
+    virtual Vector operator *(const T scalar) const
+    {
+      float d = static_cast<T>(scalar);
+      return Vector(base_ * d);
+    }
+
+    virtual Vector operator /(const T scalar) const
+    {
+      float d = static_cast<T>(scalar);
+      return Vector(base_ / d);
+    }
 
     // Vector math operators
-    virtual Vector<T, I>& operator +=(const Vector& vector);
-    virtual Vector<T, I>& operator -=(const Vector& vector);
+    virtual Vector& operator +=(const Vector& vector)
+    {
+      base_ += vector.base_;
+    }
 
-    virtual Vector operator +(const Vector& vector) const;
-    virtual Vector operator -(const Vector& vector) const;
+    virtual Vector& operator -=(const Vector& vector)
+    {
+      base_ -= vector.base_;
+    }
+
+    virtual Vector operator +(const Vector& vector) const
+    {
+      return Vector(base_ + vector.base_);
+    }
+
+    virtual Vector operator -(const Vector& vector) const
+    {
+      return Vector(base_ - vector.base_);
+    }
 
     // Vector compare operators
-    virtual bool operator ==(const Vector& vector) const;
-    virtual bool operator !=(const Vector& vector) const;
+    virtual bool operator ==(const Vector& vector) const
+    {
+      return (base_ == vector.base_);
+    }
+
+    virtual bool operator !=(const Vector& vector) const
+    {
+      return !(base_ == vector.base_);
+    }
 
     // Vector other operators
-    virtual T length() const;
-    virtual T normalize() const;
-    virtual T dot() const;
-    virtual Vector cross(const Vector& vector) const;
+    virtual T length() const
+    {
+      return static_cast<T>(base_.length());
+    }
+
+    virtual void normalize()
+    {
+      normalize();
+    }
+
+    virtual T dot(const Vector& vector) const
+    {
+      return static_cast<T>(base_.dot(vector.base_));
+    }
+
+    virtual Vector cross(const Vector& vector) const
+    {
+      return Vector(base_.cross(vector.base_));
+    }
     
-  private:
+  protected:
     VectorBase base_;
   
   }; // class Vector
+
+  template <typename T, size_t I>
+  inline std::ostream& operator <<(std::ostream& output, const Vector<T, I>& vector)
+  {
+    output << std::endl;
+    output << "[";
+    for(int i = 0; i < vector.size(); i++)
+    {
+      output << std::fixed << std::setprecision(2) << vector(i) << ", ";
+    }
+    output << "]" << std::endl;
+    return output;
+  }
 
 }  // namespace la
 }  // namespace sgbot

@@ -21,3 +21,6 @@ TARGET_LINK_LIBRARIES(matrix-sample sgbot boost_system boost_thread)
 
 ADD_EXECUTABLE(tf-sample tf-sample.cpp)
 TARGET_LINK_LIBRARIES(tf-sample sgbot boost_system boost_thread)
+
+ADD_EXECUTABLE(vector-sample vector-sample.cpp)
+TARGET_LINK_LIBRARIES(vector-sample sgbot boost_system boost_thread)

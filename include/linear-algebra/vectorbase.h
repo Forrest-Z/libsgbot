@@ -9,6 +9,7 @@
 #ifndef _LA_VECTORBASE_H_
 #define _LA_VECTORBASE_H_
 
+#include <assert.h>
 #include <common/exception.h>
 #include <vector>
 
@@ -33,42 +34,79 @@ namespace la {
     VectorBase()
     {}
 
-    VectorBase(size_t size)
+    VectorBase(size_t items)
     {
-      vector_.resize(size);
+      resize(items);
     }
 
     // Define Destructor
     virtual ~VectorBase() {}
 
     // Copy constructor
-    VectorBase(const VectorBase& vector)
+    VectorBase(const VectorBase& other)
     {
+      this->resize(other.size());
+      for(int i = 0; i < this->size(); i++)
+      {
+        items_[i] = other(i);
+      }
     }
 
     VectorBase operator =(const VectorBase& other) const
     {
+      VectorBase vec;
 
+      vec.resize(other.size());
+
+      for(int i = 0; i < this->size(); i++)
+      {
+        vec(i) = other(i);
+      }
+
+      return vec;
     }
 
     VectorBase& operator =(const VectorBase& other)
     {
+      if(this == &other)
+      {
+        return *this;
+      }
 
+      this->resize(other.size());
+
+      for(int i = 0; i < this->size(); i++)
+      {
+        items_[i] = other(i);
+      }
+
+      return *this;
     }
 
     // Member functions
-    
-    size_t getItemCount() {
-      return vector_.size();
+    virtual const size_t size() const
+    {
+      return items_.size();
+    }
+
+    virtual void resize(size_t items)
+    {
+      items_.resize(items);
     }
 
     // Copy operator
-    virtual float& operator()(size_t index) {
+    virtual float& operator()(size_t index)
+    {
+      assert(index < size());
 
+      return items_[index];
     }
     
-    virtual float operator()(size_t index) const {
+    virtual const float operator()(size_t index) const
+    {
+      assert(index < size());
 
+      return items_[index];
     }
 
     // Vector monocular operators
@@ -90,17 +128,16 @@ namespace la {
 
     // Vector compare operators
     virtual bool operator ==(const VectorBase& vector) const;
-    virtual bool operator !=(const VectorBase& vector) const;
 
     // Vector other operators
     virtual float length() const;
-    virtual float normalize() const;
-    virtual float dot() const;
+    virtual void normalize();
+    virtual float dot(const VectorBase& vector) const;
     virtual VectorBase cross(const VectorBase& vector) const;
     
   private:
-    VectorArray vector_;
-  }; // class Vector
+    VectorArray items_;
+  }; // class VectorBase
 
 }  // namespace la
 }  // namespace sgbot
