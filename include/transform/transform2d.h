@@ -18,18 +18,22 @@
 namespace sgbot {
 namespace tf {
 
-  using namespace sgbot::la;
-
   class Transform2D {
   public:
     // Define constructor
     Transform2D()
-      : x_(0), y_(0), theta_(0)
-    {}
+    {
+      tf_(0) = 0.0f;
+      tf_(1) = 0.0f;
+      tf_(2) = 0.0f;
+    }
 
     Transform2D(float x, float y, float theta)
-      : x_(x), y_(y), theta_(theta)
-    {}
+    {
+      tf_(0) = x;
+      tf_(1) = y;
+      tf_(2) = theta;
+    }
 
     // Define destructor
     virtual ~Transform2D() {}
@@ -42,7 +46,6 @@ namespace tf {
       setValue(x, y, theta);
     }
 
-    // Copy operator
     Transform2D& operator()(float x, float y, float theta)
     {
       Transform2D& tf = *this;
@@ -62,15 +65,7 @@ namespace tf {
     {
       Transform2D& result = *this;
 
-      float x0, y0, theta0;
-
-      float x1, y1, theta1;
-
-      result.getValue(x0, y0, theta0);
-
-      tf.getValue(x1, y1, theta1);
-
-      result.setValue(x0 + x1, y0 + y1, theta0 + theta1);
+      result.tf_ += tf.tf_;
 
       return result;
     }
@@ -79,15 +74,7 @@ namespace tf {
     {
       Transform2D result(*this);
 
-      float x0, y0, theta0;
-
-      float x1, y1, theta1;
-
-      result.getValue(x0, y0, theta0);
-
-      tf.getValue(x1, y1, theta1);
-
-      result.setValue(x0 + x1, y0 + y1, theta0 + theta1);
+      result.tf_ += tf.tf_;
 
       return result;
     }
@@ -95,32 +82,31 @@ namespace tf {
     // Member functions
     void setValue(float x, float y, float theta)
     {
-      x_ = x;
-      y_ = y;
-      theta_ = theta;
+      tf_(0) = x;
+      tf_(1) = y;
+      tf_(2) = theta;
     }
 
     void getValue(float& x, float& y, float& theta) const
     {
-      x = x_;
-      y = y_;
-      theta = theta_;
+      x = tf_(0);
+      y = tf_(1);
+      theta = tf_(2);
     }
 
     // Get a inverse transform
     Transform2D inverse() const
     {
-      Transform2D result(-x_, -y_, (theta_ + 180));
+      return Transform2D(-tf_(0), -tf_(1), (tf_(2) + 180));
     }
 
     // To transform a pose in origin frame
     sgbot::Pose2D transform(const sgbot::Pose2D& pose);
 
     sgbot::Point2D transform(const sgbot::Point2D& point);
-    
 
-  private:
-    float x_, y_, theta_;
+  protected:
+    sgbot::la::Vector<float, 3> tf_;
   };  // class Transform2D
 
 }  // namespace tf
