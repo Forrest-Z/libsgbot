@@ -18,4 +18,6 @@ int main(int argc,char* argv[])
     sgbot::Pose2D p2 = (tf1 * tf2).transform(p1);
 
     std::cout << p2;
+
+    std::cout << (tf1 * tf2.inverse()).transform(p1);
 }
