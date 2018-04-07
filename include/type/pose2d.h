@@ -42,6 +42,20 @@ namespace sgbot {
       pose_(2) = other.theta();
       return *this;
     }
+
+    Pose2D& operator *=(float factor)
+    {
+      pose_(0) *= factor;
+      pose_(1) *= factor;
+      return *this;
+    }
+
+    Pose2D& operator /=(float factor)
+    {
+      pose_(0) /= factor;
+      pose_(1) /= factor;
+      return *this;
+    }
     
     float& x()
     {

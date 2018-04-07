@@ -75,6 +75,26 @@ namespace sensor {
       points_.clear();
     }
 
+    Lidar2D& operator *=(float factor)
+    {
+      origin_ *= factor;
+      for(int i = 0; i < points_.size(); i++)
+      {
+        points_[i] *= factor;
+      }
+      return *this;
+    }
+
+    Lidar2D& operator /=(float factor)
+    {
+      origin_ /= factor;
+      for(int i = 0; i < points_.size(); i++)
+      {
+        points_[i] /= factor;
+      }
+      return *this;
+    }
+
     const sgbot::Point2D& getOrigin() const
     {
       return origin_;

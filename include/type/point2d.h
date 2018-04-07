@@ -44,6 +44,18 @@ namespace sgbot {
       return *this;
     }
 
+    Point2D& operator *=(float factor)
+    {
+      point_ *= factor;
+      return *this;
+    }
+
+    Point2D& operator /=(float factor)
+    {
+      point_ /= factor;
+      return *this;
+    }
+
     float& x()
     {
       return point_(0);
