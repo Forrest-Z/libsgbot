@@ -12,6 +12,7 @@
 #include <string>
 #include <common/exception.h>
 #include <sensor/lidar2d.h>
+#include <sensor/gyro.h>
 #include <type/map2d.h>
 #include <slam/hector/config.h>
 #include <slam/hector/slam/processor.h>
@@ -50,6 +51,8 @@ namespace hector {
     }
 
     void updateByScan(const sgbot::sensor::Lidar2D& scan);
+
+    void updateByScanWithGyro(const sgbot::sensor::Lidar2D& scan, const sgbot::sensor::Gyro& gyro);
 
     bool getMapAndPose(sgbot::Map2D& map, sgbot::Pose2D& pose)
     {
