@@ -106,7 +106,10 @@ namespace tf {
     sgbot::Point2D transform(const sgbot::Point2D& point);
 
   protected:
-    sgbot::la::Vector<float, 3> tf_;
+    sgbot::la::Vector<float 3> translation_;
+    sgbot::la::Matrix<float, 3, 3> rotation_;
+    sgbot::la::Vector<float, 3> scaling_;
+    
   };  // class Transform2D
 
 }  // namespace tf

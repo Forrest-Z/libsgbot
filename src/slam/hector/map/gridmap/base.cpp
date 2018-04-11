@@ -15,7 +15,10 @@ namespace hector {
   template <typename CellType>
   void GridMapBase<CellType>::setMapTransformation(const float left_offset, const float top_offset, float cell_length)
   {
+    dimension_.setCellLength(cell_length);
+    dimension_.setTopLeftOffset(top_offset, left_offset);
 
+    world_to_map_scaling_factor_ = 1.0f / cell_length;
   }
 
   template <typename CellType>
