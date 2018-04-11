@@ -8,8 +8,8 @@
 
 int main(int argc,char* argv[])
 {
-    sgbot::tf::Transform2D tf1(1.0f, 2.0f, 30.0f);
-    sgbot::tf::Transform2D tf2(0.5f, 0.5f, 0.0f);
+    sgbot::tf::Transform2D tf1(1.0f, 2.0f, 30.0f, 1.0f);
+    sgbot::tf::Transform2D tf2(0.5f, 0.5f, 0.0f, 1.0f);
 
     sgbot::Pose2D p1(0.5f, 0.5f, 15.0f);
 
@@ -21,3 +21,4 @@ int main(int argc,char* argv[])
 
     std::cout << (tf1 * tf2.inverse()).transform(p1);
 }
+

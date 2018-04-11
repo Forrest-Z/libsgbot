@@ -26,7 +26,7 @@ namespace tf {
 
     result.x() = point.x();
     result.y() = point.y();
-    result.theta() = pose.theta() + tf_(2);
+    result.theta() = pose.theta() + theta_;
 
     return result;
   }
@@ -35,11 +35,12 @@ namespace tf {
   {
     sgbot::Point2D result;
 
-    float cos_val = sgbot::math::cos(tf_(2));
-    float sin_val = sgbot::math::sin(tf_(2));
+    sgbot::la::Vector<float, 3> coord;
 
-    result.x() = point.x() * cos_val - point.y() * sin_val + tf_(0);
-    result.y() = point.x() * sin_val + point.y() * cos_val + tf_(1);
+    coord = tf_ * point.vectorForTransform();
+
+    result.x() = coord(0);
+    result.y() = coord(1);
 
     return result;
   }

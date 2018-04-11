@@ -37,6 +37,7 @@ namespace la {
     MatrixBase(size_t rows, size_t columns)
     {
       resize(rows, columns);
+      zero();
     }
 
     // Define Destructor
@@ -44,6 +45,13 @@ namespace la {
     {}
 
     // Member functions
+    virtual void zero()
+    {
+      for(int i = 0; i < getRows(); i++)
+        for(int j = 0; j < getColumns(); j++)
+          matrix_[i][j] = 0.0f;
+    }
+
     virtual const size_t getRows() const
     {
       return matrix_.size();

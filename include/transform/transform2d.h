@@ -23,16 +23,12 @@ namespace tf {
     // Define constructor
     Transform2D()
     {
-      tf_(0) = 0.0f;
-      tf_(1) = 0.0f;
-      tf_(2) = 0.0f;
+      setValue(0.0f, 0.0f, 0.0f, 1.0f);
     }
 
-    Transform2D(float x, float y, float theta)
+    Transform2D(float dx, float dy, float theta, float scalar)
     {
-      tf_(0) = x;
-      tf_(1) = y;
-      tf_(2) = theta;
+      setValue(dx, dy, theta, scalar);
     }
 
     // Define destructor
@@ -41,22 +37,22 @@ namespace tf {
     // Copy constructor
     Transform2D(const Transform2D& tf)
     {
-      float x, y, theta;
-      tf.getValue(x, y, theta);
-      setValue(x, y, theta);
+      float x, y, theta, scalar;
+      tf.getValue(x, y, theta, scalar);
+      setValue(x, y, theta, scalar);
     }
 
-    Transform2D& operator()(float x, float y, float theta)
+    Transform2D& operator()(float dx, float dy, float theta, float scalar)
     {
       Transform2D& tf = *this;
-      tf.setValue(x, y, theta);
+      tf.setValue(dx, dy, theta, scalar);
       return tf;
     }
     
-    Transform2D operator()(float x, float y, float theta) const
+    Transform2D operator()(float x, float y, float theta, float scalar) const
     {
       Transform2D tf(*this);
-      tf.setValue(x, y, theta);
+      tf.setValue(x, y, theta, scalar);
       return tf;
     }
 
@@ -65,7 +61,15 @@ namespace tf {
     {
       Transform2D& result = *this;
 
-      result.tf_ += tf.tf_;
+      assert(result.scalar_ == tf.scalar_);
+
+      float dx, dy, theta;
+
+      dx = result.dx_ + tf.dx_;
+      dy = result.dy_ + tf.dy_;
+      theta = result.theta_ + tf.theta_;
+
+      result.setValue(dx, dy, theta, result.scalar_);
 
       return result;
     }
@@ -74,41 +78,97 @@ namespace tf {
     {
       Transform2D result(*this);
 
-      result.tf_ += tf.tf_;
+      assert(result.scalar_ == tf.scalar_);
+
+      float dx, dy, theta;
+
+      dx = result.dx_ + tf.dx_;
+      dy = result.dy_ + tf.dy_;
+      theta = result.theta_ + tf.theta_;
+
+      result.setValue(dx, dy, theta, result.scalar_);
 
       return result;
     }
 
     // Member functions
-    void setValue(float x, float y, float theta)
+    void setValue(float dx, float dy, float theta, float scalar)
     {
-      tf_(0) = x;
-      tf_(1) = y;
-      tf_(2) = theta;
+      setScalar(scalar);
+      setTranslate(dx, dy);
+      setRotate(theta);
+      calcTransformMatrix();
     }
 
-    void getValue(float& x, float& y, float& theta) const
+    void getValue(float& dx, float& dy, float& theta, float& scalar) const
     {
-      x = tf_(0);
-      y = tf_(1);
-      theta = tf_(2);
+      dx = dx_;
+      dy = dy_;
+      theta = theta_;
+      scalar = scalar_;
     }
 
     // Get a inverse transform
     Transform2D inverse() const
     {
-      return Transform2D(-tf_(0), -tf_(1), (tf_(2) + 180));
+      return Transform2D(-dx_, -dy_, (theta_ + 180), (1.0f / scalar_));
     }
 
     // To transform a pose in origin frame
     sgbot::Pose2D transform(const sgbot::Pose2D& pose);
 
     sgbot::Point2D transform(const sgbot::Point2D& point);
+  private:
+
+    void setScalar(const float scalar)
+    {
+      scale_(0, 0) = scalar;
+      scale_(1, 1) = scalar;
+      scale_(2, 2) = 1.0f;
+
+      scalar_ = scalar;
+    }
+
+    void setRotate(const float theta)
+    {
+      float sin_val = sgbot::math::sin(theta);
+      float cos_val = sgbot::math::cos(theta);
+      rotate_(0, 0) = cos_val;
+      rotate_(0, 1) = -sin_val;
+      rotate_(1, 0) = sin_val;
+      rotate_(1, 1) = cos_val;
+      rotate_(2, 2) = 1.0f;
+
+      theta_ = theta;
+    }
+
+    void setTranslate(const float dx, const float dy)
+    {
+      translate_(0, 0) = 1.0f;
+      translate_(0, 2) = dx;
+      translate_(1, 1) = 1.0f;
+      translate_(1, 2) = dy;
+      translate_(2, 2) = 1.0f;
+
+      dx_ = dx;
+      dy_ = dy;
+    }
+
+    void calcTransformMatrix()
+    {
+      tf_ = translate_ * rotate_ * scale_;
+    }
 
   protected:
-    sgbot::la::Vector<float 3> translation_;
-    sgbot::la::Matrix<float, 3, 3> rotation_;
-    sgbot::la::Vector<float, 3> scaling_;
+    sgbot::la::Matrix<float, 3, 3> translate_;
+    sgbot::la::Matrix<float, 3, 3> rotate_;
+    sgbot::la::Matrix<float, 3, 3> scale_;
+
+    sgbot::la::Matrix<float, 3, 3> tf_;
+
+    float dx_, dy_;
+    float theta_;
+    float scalar_;
     
   };  // class Transform2D
 

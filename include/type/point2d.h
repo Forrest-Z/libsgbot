@@ -56,6 +56,15 @@ namespace sgbot {
       return *this;
     }
 
+    sgbot::la::Vector<float, 3> vectorForTransform() const
+    {
+      sgbot::la::Vector<float, 3> result;
+      result(0) = point_(0);
+      result(1) = point_(1);
+      result(2) = 1.0f;
+      return result;
+    }
+
     float& x()
     {
       return point_(0);

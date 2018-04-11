@@ -11,6 +11,7 @@
 
 #include <common/exception.h>
 #include <linear-algebra/vectorbase.h>
+#include <linear-algebra/matrix.h>
 #include <vector>
 #include <iomanip>
 
@@ -170,6 +171,28 @@ namespace la {
     VectorBase base_;
   
   }; // class Vector
+
+  template <typename T, size_t N>
+  inline Vector<T, N> operator *(const Matrix<T, N, N>& lm, const Vector<T, N>& rv)
+  {
+    Matrix<T, N, 1> ref;
+
+    for(int i = 0; i < rv.size(); i++)
+    {
+      ref(i, 0) = rv(i);
+    }
+
+    ref = lm * ref;
+
+    Vector<T, N> result;
+
+    for(int i = 0; i < ref.getRows(); i++)
+    {
+      result(i) = ref(i, 0);
+    }
+
+    return result;
+  }
 
   template <typename T, size_t I>
   inline std::ostream& operator <<(std::ostream& output, const Vector<T, I>& vector)
