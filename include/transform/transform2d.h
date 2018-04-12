@@ -111,13 +111,14 @@ namespace tf {
     // Get a inverse transform
     Transform2D inverse() const
     {
-      return Transform2D(-dx_, -dy_, (theta_ + 180), (1.0f / scalar_));
+      return Transform2D(-dx_, -dy_, -theta_, (1.0f / scalar_));
     }
 
     // To transform a pose in origin frame
     sgbot::Pose2D transform(const sgbot::Pose2D& pose);
 
     sgbot::Point2D transform(const sgbot::Point2D& point);
+
   private:
 
     void setScalar(const float scalar)

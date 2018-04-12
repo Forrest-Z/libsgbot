@@ -28,7 +28,7 @@ namespace hector {
       setDimensions(width, height);
       width_ = width;
       height_ = height;
-      setMapTransformation(left_offset, top_offset, resolution);
+      setMapTransformation(width, height, left_offset, top_offset, resolution);
       clear();
     }
 
@@ -53,7 +53,7 @@ namespace hector {
       dimension_ = other.dimension_;
       world_to_map_tf_ = other.world_to_map_tf_;
       map_to_world_tf_ = other.map_to_world_tf_;
-      world_to_map_scaling_factor_ = other.world_to_map_scaling_factor_;
+      map_scaling_factor_ = other.map_scaling_factor_;
 
       int map_data_size = getWidth() * getHeight() * sizeof(CellType);
 
@@ -181,7 +181,7 @@ namespace hector {
 
     float getScalingFactor() const
     {
-      return world_to_map_scaling_factor_;
+      return map_scaling_factor_;
     }
 
     float getCellLength() const
@@ -201,7 +201,7 @@ namespace hector {
 
     bool getMapExtends(int& start_x, int& start_y, int& end_x, int& end_y);
 
-    void setMapTransformation(const float left_offset, const float top_offset, float cell_length);
+    void setMapTransformation(const int width, const int height, const float left_offset, const float top_offset, float cell_length);
 
   protected:
     GridMapDimension dimension_;
@@ -209,7 +209,7 @@ namespace hector {
     int width_, height_;
     sgbot::tf::Transform2D world_to_map_tf_;
     sgbot::tf::Transform2D map_to_world_tf_;
-    float world_to_map_scaling_factor_;
+    float map_scaling_factor_;
   private:
     int updated_times_;
   };  // class GridMapBase
