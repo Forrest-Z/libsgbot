@@ -15,7 +15,35 @@ namespace hector {
   template <typename CellType, typename CellFactor>
   void OccupancyGridMapBase<CellType, CellFactor>::updateByScan(const sgbot::sensor::Lidar2D& scan, const sgbot::Pose2D& world_pose)
   {
+    current_mark_free_index_ = current_updated_index_ + 1;
+    current_mark_occupancy_index_ = current_updated_index_ + 2;
 
+    sgbot::Pose2D map_pose = this->getMapPose(world_pose);
+    
+    // TODO: check the following code is correct
+    sgbot::tf::Transform2D pose_tf(map_pose.x(), map_pose.y(), map_pose.theta(), 1.0f);
+
+    sgbot::Point2D scan_origin_in_map = pose_tf.transform(scan.getOrigin());
+
+    int scan_origin_x = scan_origin_in_map.x() + 0.5f;
+    int scan_origin_y = scan_origin_in_map.y() + 0.5f;
+
+    for(int i = 0; i < scan.getCount(); ++i)
+    {
+      sgbot::Point2D scan_endpoint_in_map = pose_tf.transform(scan.getPoint(i));
+
+      int scan_endpoint_x = scan_endpoint_in_map.x() + 0.5f;
+      int scan_endpoint_y = scan_endpoint_in_map.y() + 0.5f;
+
+      if((scan_origin_x != scan_endpoint_x) && (scan_origin_y != scan_endpoint_y))
+      {
+        updateLine(scan_origin_x, scan_origin_y, scan_endpoint_x, scan_endpoint_y);
+      }
+    }
+
+    this->update();
+
+    current_updated_index_ += 3;
   }
 
   template <typename CellType, typename CellFactor>
@@ -71,6 +99,7 @@ namespace hector {
 
     // bresenham draw line algorithm
     updateCellAsFree(offset);
+
     for(int i = 0; i < (abs_a - 1); ++i)
     {
       offset += offset_a;
