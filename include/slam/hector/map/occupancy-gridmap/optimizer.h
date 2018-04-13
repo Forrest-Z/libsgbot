@@ -25,6 +25,10 @@ namespace hector {
       : gridmap_(gridmap)
     {
       cache_.setMapSize(gridmap->getWidth(), gridmap->getHeight());
+      surround_point_intensities[0] = 0.0f;
+      surround_point_intensities[1] = 0.0f;
+      surround_point_intensities[2] = 0.0f;
+      surround_point_intensities[3] = 0.0f;
     }
 
     virtual ~OccupancyGridMapOptimizer() {}
@@ -65,6 +69,11 @@ namespace hector {
       return gridmap_->getMapPose(world_pose);
     }
 
+    inline sgbot::tf::Transform2D getStateTransform(const sgbot::Pose2D& pose) const
+    {
+      return sgbot::tf::Transform2D(pose.x(), pose.y(), pose.theta(), 1.0f);
+    }
+
     float getCellProbability(const int index) const
     {
       return gridmap_->getCellProbability(index);
@@ -78,6 +87,8 @@ namespace hector {
   protected:
     OccupancyGridMap* gridmap_;
     GridMapCache cache_;
+    
+    float surround_point_intensities[4];
   };  // class OccupancyGridMapOptimizer
 
 }  // namespace hector
