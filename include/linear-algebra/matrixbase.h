@@ -162,6 +162,15 @@ namespace la {
         matrix_[i][i] = 1.0f;
       }
     }
+ 
+    virtual float sum() const
+    {
+      float sum_val = 0.0f;
+      for(int i = 0; i < getRows(); i++)
+        for(int j = 0; j < getColumns(); j++)
+          sum_val += matrix_[i][j];
+      return sum_val;
+    }
   
   protected:
     MatrixArray& getMatrix()

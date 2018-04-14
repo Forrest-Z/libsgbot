@@ -56,4 +56,14 @@ int main(int argc,char* argv[])
     d(2, 3) = 9.0f;
 
     std::cout << "multi: " << std::fixed << std::setprecision(1) << (a * d);
+
+    sgbot::la::Matrix<float, 3, 1> e;
+    e(0, 0) = 1.0f;
+    e(1, 0) = 2.0f;
+    e(2, 0) = 3.0f;
+
+    sgbot::la::Matrix<float, 3, 3> f;
+    f = e * e.transpose();
+
+    std::cout << "A*AT: " << std::fixed << std::setprecision(1) << f;
 }

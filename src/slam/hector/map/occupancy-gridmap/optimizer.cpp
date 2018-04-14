@@ -68,6 +68,7 @@ namespace hector {
     float y = map_pose.y();
     float theta = map_pose.theta();
 
+    // TODO: to check this matrix is correct
     sgbot::la::Matrix<float, 3, 7> sigma;
     // column 1
     sigma(0, 0) = x + delta_tf_x;
@@ -98,6 +99,44 @@ namespace hector {
     sigma(1, 6) = y;
     sigma(2, 6) = theta;
 
+    sgbot::la::Matrix<float, 7, 1> likelihoods;
+    likelihoods(0, 0) = getStateLikelihood(sgbot::Pose2D((x + delta_tf_x), y, theta), scan);
+    likelihoods(1, 0) = getStateLikelihood(sgbot::Pose2D((x - delta_tf_x), y, theta), scan);
+    likelihoods(2, 0) = getStateLikelihood(sgbot::Pose2D(x, (y + delta_tf_y), theta), scan);
+    likelihoods(3, 0) = getStateLikelihood(sgbot::Pose2D(x, (y - delta_tf_y), theta), scan);
+    likelihoods(4, 0) = getStateLikelihood(sgbot::Pose2D(x, y, (theta + delta_tf_theta)), scan);
+    likelihoods(5, 0) = getStateLikelihood(sgbot::Pose2D(x, y, (theta - delta_tf_theta)), scan);
+    likelihoods(6, 0) = getStateLikelihood(sgbot::Pose2D(x, y, theta), scan);
+
+    // TODO: print this variant to debug
+    float inv_lh_norm = 1 / likelihoods.sum();
+
+    sgbot::la::Matrix<float, 3, 1> mean;
+    for(int i = 0; i < 7; ++i)
+    {
+      sgbot::la::Matrix<float, 3, 1> sigma_column;
+      sigma_column(0, 0) = sigma(0, i);
+      sigma_column(1, 0) = sigma(1, i);
+      sigma_column(2, 0) = sigma(2, i);
+      mean += sigma_column * likelihoods(i, 0);
+    }
+
+    mean *= inv_lh_norm;
+
+    sgbot::la::Matrix<float, 3, 3> cov_matrix_map;
+
+    for(int i = 0; i < 7; ++i)
+    {
+      sgbot::la::Matrix<float, 3, 1> sigma_min_mean;
+      sigma_min_mean(0, 0) = sigma(0, i) - mean(0, 0);
+      sigma_min_mean(1, 0) = sigma(1, i) - mean(1, 0);
+      sigma_min_mean(2, 0) = sigma(2, i) - mean(2, 0);
+      
+      sgbot::la::Matrix<float, 3, 3> temp = (sigma_min_mean * sigma_min_mean.transpose());
+      cov_matrix_map += temp * (likelihoods(i, 0) * inv_lh_norm);
+    }
+
+    return cov_matrix_map;
   }
 
   sgbot::la::Matrix<float, 3, 3> OccupancyGridMapOptimizer::getWorldCoordsCovariance(const sgbot::la::Matrix<float, 3, 3>& map_coords_cov)

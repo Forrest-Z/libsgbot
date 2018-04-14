@@ -168,9 +168,10 @@ namespace la {
       return Matrix(base_.inverse());
     }
 
-    virtual Matrix transpose() const
+    virtual Matrix<T, C, R> transpose() const
     {
-      return Matrix(base_.transpose());
+      Matrix<T, C, R> result(base_.transpose());
+      return result;
     }
 
     virtual T determinant() const
@@ -185,6 +186,11 @@ namespace la {
     {
       base_.indentity();
     }
+
+    virtual T sum() const
+    {
+      return static_cast<T>(base_.sum());
+    }    
 
   protected:
     MatrixBase base_;
