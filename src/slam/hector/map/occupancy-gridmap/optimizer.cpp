@@ -14,11 +14,89 @@ namespace hector {
 
   void OccupancyGridMapOptimizer::getCompleteHessianDerivs(const sgbot::Pose2D& estimate_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& hessian, sgbot::tf::Transform2D& delta_transformation)
   {
-    
+    sgbot::tf::Transform2D state_tf = getStateTransform(estimate_pose);
+
+    float sin_val = sgbot::math::sin(estimate_pose.theta());
+    float cos_val = sgbot::math::cos(estimate_pose.theta());
+
+    float tf_x = 0.0f;
+    float tf_y = 0.0f;
+    float tf_theta = 0.0f;
+
+    // TODO: set below for{} segment in openmp frameworks
+    for(int i = 0; i < scan.getCount(); i++)
+    {
+      const sgbot::Point2D& p = scan.getPoint(i);
+      sgbot::Point2D point_in_pose = state_tf.transform(p);
+
+      float occ, dx, dy;
+
+      if(!interpMapValueWithDerivatives(state_tf.transform(p), occ, dx, dy))
+      {
+        // TODO: should put error process segment here
+        continue;
+      }
+      
+      float inv_occ = 1.0f - occ;
+
+      float rotate_deriv = (-sin_val * p.x() - cos_val * p.y()) * dx + (cos_val * p.x() - sin_val * p.y()) * dy;
+
+      tf_x += (dx * inv_occ);
+      tf_y += (dy * inv_occ);
+      tf_theta += (rotate_deriv * inv_occ);
+
+      hessian(0, 0) += sgbot::math::sqrt(dx);
+      hessian(1, 1) += sgbot::math::sqrt(dy);
+      hessian(2, 2) += sgbot::math::sqrt(rotate_deriv);
+
+      hessian(0, 1) += dx * dy;
+      hessian(0, 2) += dx * rotate_deriv;
+      hessian(1, 2) += dy * rotate_deriv;
+    }
+    hessian(1, 0) = hessian(0, 1);
+    hessian(2, 0) = hessian(0, 2);
+    hessian(2, 1) = hessian(1, 2);
   }
 
   sgbot::la::Matrix<float, 3, 3> OccupancyGridMapOptimizer::getPoseCovariance(const sgbot::Pose2D& map_pose, const sgbot::sensor::Lidar2D& scan)
   {
+    float delta_tf_x = 1.5f;
+    float delta_tf_y = 1.5f;
+    float delta_tf_theta = 0.05f;
+
+    float x = map_pose.x();
+    float y = map_pose.y();
+    float theta = map_pose.theta();
+
+    sgbot::la::Matrix<float, 3, 7> sigma;
+    // column 1
+    sigma(0, 0) = x + delta_tf_x;
+    sigma(1, 0) = y;
+    sigma(2, 0) = theta;
+    // column 2
+    sigma(0, 1) = x - delta_tf_x;
+    sigma(1, 1) = y;
+    sigma(2, 1) = theta;
+    // column 3
+    sigma(0, 2) = x;
+    sigma(1, 2) = y + delta_tf_y;
+    sigma(2, 2) = theta;
+    // column 4
+    sigma(0, 3) = x;
+    sigma(1, 3) = y - delta_tf_y;
+    sigma(2, 3) = theta;
+    // column 5
+    sigma(0, 4) = x;
+    sigma(1, 4) = y;
+    sigma(2, 4) = theta + delta_tf_theta;
+    // column 6
+    sigma(0, 5) = x;
+    sigma(1, 5) = y;
+    sigma(2, 5) = theta - delta_tf_theta;
+    // column 7
+    sigma(0, 6) = x;
+    sigma(1, 6) = y;
+    sigma(2, 6) = theta;
 
   }
 
