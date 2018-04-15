@@ -67,6 +67,11 @@ namespace math {
     return (n > 0) ? 1 : -1;
   }
 
+  inline float sqr(float x)
+  {
+    return (x * x);
+  }
+
 }  // namespace math  
 }  // namespace sgbot
 

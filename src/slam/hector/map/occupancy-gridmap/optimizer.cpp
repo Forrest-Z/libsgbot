@@ -45,9 +45,9 @@ namespace hector {
       tf_y += (dy * inv_occ);
       tf_theta += (rotate_deriv * inv_occ);
 
-      hessian(0, 0) += sgbot::math::sqrt(dx);
-      hessian(1, 1) += sgbot::math::sqrt(dy);
-      hessian(2, 2) += sgbot::math::sqrt(rotate_deriv);
+      hessian(0, 0) += sgbot::math::sqr(dx);
+      hessian(1, 1) += sgbot::math::sqr(dy);
+      hessian(2, 2) += sgbot::math::sqr(rotate_deriv);
 
       hessian(0, 1) += dx * dy;
       hessian(0, 2) += dx * rotate_deriv;
@@ -141,27 +141,107 @@ namespace hector {
 
   sgbot::la::Matrix<float, 3, 3> OccupancyGridMapOptimizer::getWorldCoordsCovariance(const sgbot::la::Matrix<float, 3, 3>& map_coords_cov)
   {
+    sgbot::la::Matrix<float, 3, 3> cov_matrix_world;
 
+    float scale = gridmap_->getCellLength();
+    float scale_sqr = sgbot::math::sqr(scale);
+
+    cov_matrix_world(0, 0) = map_coords_cov(0, 0) * scale_sqr;
+    cov_matrix_world(1, 1) = map_coords_cov(1, 1) * scale_sqr;
+
+    cov_matrix_world(1, 0) = map_coords_cov(1, 0) * scale_sqr;
+    cov_matrix_world(0, 1) = cov_matrix_world(1, 0);
+
+    cov_matrix_world(2, 0) = map_coords_cov(2, 0) * scale;
+    cov_matrix_world(0, 2) = cov_matrix_world(2, 0);
+
+    cov_matrix_world(2, 1) = map_coords_cov(2, 1) * scale;
+    cov_matrix_world(1, 2) = cov_matrix_world(2, 1);
+    
+    cov_matrix_world(2, 2) = map_coords_cov(2, 2);    
+
+    return cov_matrix_world;
   }
 
   float OccupancyGridMapOptimizer::getStateResidual(const sgbot::Pose2D& state, const sgbot::sensor::Lidar2D& points)
   {
+    int step = 1;
+    float residual = 0.0f;
 
+    sgbot::tf::Transform2D state_tf = getStateTransform(state);
+
+    for(int i = 0; i < points.getCount(); i += step)
+    {
+      float inv_occ = 1.0f - getInterpMapValue(state_tf.transform(points.getPoint(i)));
+      residual += inv_occ;
+    }
+
+    return residual;
   }
 
   float OccupancyGridMapOptimizer::getResidualLikelihood(float residual, int scan_points_count)
   {
-
+    float a = static_cast<int>(scan_points_count);
+    float count = static_cast<float>(a);
+    return (1 - residual / count);
   }
 
   float OccupancyGridMapOptimizer::getStateLikelihood(const sgbot::Pose2D& state, const sgbot::sensor::Lidar2D& points)
   {
+    float residual = getStateResidual(state, points);
 
+    return getResidualLikelihood(residual, points.getCount());
   }
 
   float OccupancyGridMapOptimizer::getInterpMapValue(const sgbot::Point2D& coords)
   {
+    if(gridmap_->isPointOutOfMap(coords))
+    {
+      return 0.0f;
+    }
 
+    int x_floor = static_cast<int>(coords.x());
+    int y_floor = static_cast<int>(coords.y());
+
+    float x_factor = coords.x() - static_cast<float>(x_floor);
+    float y_factor = coords.y() - static_cast<float>(y_floor);
+
+    int width = gridmap_->getWidth();
+
+    int index = y_floor * width + x_floor;
+
+    // up left point
+    if(!cache_.containsCachedData(index, surround_point_intensities[0]))
+    {
+      surround_point_intensities[0] = getCellProbability(index);
+      cache_.cacheData(index, surround_point_intensities[0]);
+    }
+
+    // up right point
+    ++index;
+    if(!cache_.containsCachedData(index, surround_point_intensities[1]))
+    {
+      surround_point_intensities[1] = getCellProbability(index);
+      cache_.cacheData(index, surround_point_intensities[1]);
+    }
+
+    // buttom left point
+    index += (width - 1);
+    if(!cache_.containsCachedData(index, surround_point_intensities[2]))
+    {
+      surround_point_intensities[2] = getCellProbability(index);
+      cache_.cacheData(index, surround_point_intensities[2]);
+    }
+
+    // buttom right point
+    ++index;
+    if(!cache_.containsCachedData(index, surround_point_intensities[3]))
+    {
+      surround_point_intensities[3] = getCellProbability(index);
+      cache_.cacheData(index, surround_point_intensities[3]);
+    }
+
+    return ((surround_point_intensities[0] * (1.0f - x_factor) + surround_point_intensities[1] * x_factor) * (1.0f - y_factor)) + ((surround_point_intensities[2] * (1.0f - x_factor) + surround_point_intensities[3] * x_factor) * y_factor);
   }
 
   bool OccupancyGridMapOptimizer::interpMapValueWithDerivatives(const sgbot::Point2D& coords, float& occupancy_value, float& derivative_x, float& derivative_y)
