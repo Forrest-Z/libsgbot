@@ -135,6 +135,11 @@ namespace math {
     return ::hypot(x, y);
   }
 
+  float fmod(float x, float y)
+  {
+    return ::fmod(x, y);
+  }
+
 }  // namespace math
 }  // namespace sgbot
 

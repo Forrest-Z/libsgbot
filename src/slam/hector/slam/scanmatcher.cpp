@@ -7,6 +7,7 @@
  */
 
 #include <slam/hector/slam/scanmatcher.h>
+#include <std-math/gadgets.h>
 
 namespace sgbot {
 namespace slam {
@@ -19,7 +20,22 @@ namespace hector {
       sgbot::Pose2D estimate_map_pose = optimizer.getMapPose(estimation_world_pose);
 
       estimateTransformation(optimizer, estimate_map_pose, scan);
+
+      for(int i = 0; i < max_iteration_times; ++i)
+      {
+        estimateTransformation(optimizer, estimate_map_pose, scan);
+
+        // TODO: confirm the iteration times and add debug code
+      }
+
+      estimate_map_pose.theta() = sgbot::math::normalizeTheta(estimate_map_pose.theta());
+
+      covariance = hessian_;
+
+      return optimizer.getWorldPose(estimate_map_pose);
     }
+
+    return estimation_world_pose;
   }
 
   bool ScanMatcher::estimateTransformation(OccupancyGridMapOptimizer& optimizer, sgbot::Pose2D& estimation, const sgbot::sensor::Lidar2D& scan)
