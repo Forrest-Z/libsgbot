@@ -36,7 +36,9 @@ namespace hector {
 
     virtual int getLevels() const = 0;
 
-    virtual const OccupancyGridMap& getMap(int level) const = 0;
+    virtual OccupancyGridMap& getMap(int level) = 0;
+
+    virtual OccupancyGridMapOptimizer& getOptimizer(int level) = 0;
     
     virtual void onMapUpdated() = 0;
 

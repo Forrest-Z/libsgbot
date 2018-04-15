@@ -39,12 +39,12 @@ namespace hector {
         delete gridmap_;
     }
 
-    OccupancyGridMap& getMap() const
+    OccupancyGridMap& getMap()
     {
       return *gridmap_;
     }
 
-    OccupancyGridMapOptimizer& getOptimizer() const
+    OccupancyGridMapOptimizer& getOptimizer()
     {
       return *optimizer_;
     }

@@ -43,9 +43,14 @@ namespace hector {
       return 1;
     }
 
-    virtual const OccupancyGridMap& getMap(int level) const
+    virtual OccupancyGridMap& getMap(int level)
     {
       return maps_[0]->getMap();
+    }
+
+    virtual OccupancyGridMapOptimizer& getOptimizer(int level)
+    {
+      return maps_[0]->getOptimizer();
     }
     
     virtual void onMapUpdated()
@@ -55,7 +60,7 @@ namespace hector {
 
     virtual sgbot::Pose2D scanMatch(const sgbot::Pose2D& estimate_world_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& covariance)
     {
-      maps_[0]->getScanMatcher().scanMatch(estimate_world_pose, getMap(0), scan, covariance, 20);
+      maps_[0]->getScanMatcher().scanMatch(getOptimizer(0), estimate_world_pose, scan, covariance, 20);
     }
 
     virtual void updateByScan(const sgbot::sensor::Lidar2D& scan, const sgbot::Pose2D& world_pose)

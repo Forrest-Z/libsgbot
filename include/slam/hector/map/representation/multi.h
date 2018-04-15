@@ -75,12 +75,20 @@ namespace hector {
       return levels_;
     }
 
-    virtual const OccupancyGridMap& getMap(int level) const
+    virtual OccupancyGridMap& getMap(int level)
     {
       if(level < levels_)
         return maps_[level]->getMap();
       else
         return maps_[0]->getMap();
+    }
+
+    virtual OccupancyGridMapOptimizer& getOptimizer(int level)
+    {
+      if(level < levels_)
+        return maps_[level]->getOptimizer();
+      else
+        return maps_[0]->getOptimizer();
     }
     
     virtual void onMapUpdated()
@@ -99,7 +107,7 @@ namespace hector {
       {
         if(i == 0)
         {
-          pose = maps_[i]->getScanMatcher().scanMatch(pose, getMap(i), scan, covariance, 5);
+          pose = maps_[i]->getScanMatcher().scanMatch(getOptimizer(i), pose, scan, covariance, 5);
         }
         else
         {
@@ -121,7 +129,7 @@ namespace hector {
 
           multi_level_scans_[i - 1] = scan_temp;
 
-          pose = maps_[i]->getScanMatcher().scanMatch(pose, getMap(i), scan_temp, covariance, 3);
+          pose = maps_[i]->getScanMatcher().scanMatch(getOptimizer(i), pose, scan_temp, covariance, 3);
         }
       }
       return pose;

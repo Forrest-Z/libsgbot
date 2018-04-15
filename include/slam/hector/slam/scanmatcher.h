@@ -14,6 +14,7 @@
 #include <sensor/lidar2d.h>
 #include <linear-algebra/matrix.h>
 #include <slam/hector/map/occupancy-gridmap/map.h>
+#include <slam/hector/map/occupancy-gridmap/optimizer.h>
 
 namespace sgbot {
 namespace slam {
@@ -25,10 +26,17 @@ namespace hector {
     ScanMatcher() {}
     virtual ~ScanMatcher() {}
 
-    sgbot::Pose2D scanMatch(const sgbot::Pose2D& estimation_world_pose, const OccupancyGridMap& gridmap, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& covariance, const int max_iteration_times);
+    sgbot::Pose2D scanMatch(OccupancyGridMapOptimizer& optimizer, const sgbot::Pose2D& estimation_world_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& covariance, const int max_iteration_times);
   
   protected:
-    
+
+    sgbot::tf::Transform2D delta_tf_;
+    sgbot::la::Matrix<float, 3, 3> hessian_;
+
+    bool estimateTransformation(OccupancyGridMapOptimizer& optimizer, sgbot::Pose2D& estimation, const sgbot::sensor::Lidar2D& scan);
+
+    void updateEstimation(sgbot::Pose2D& estimation, float dx, float dy, float dth);
+
   };  // ScanMatcher
 
 }  // namespace hector
