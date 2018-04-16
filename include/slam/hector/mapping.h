@@ -14,8 +14,8 @@
 #include <sensor/lidar2d.h>
 #include <sensor/gyro.h>
 #include <type/map2d.h>
-#include <slam/hector/config.h>
 #include <slam/hector/slam/processor.h>
+#include <slam/hector/config.h>
 
 namespace sgbot {
 namespace slam {
@@ -33,16 +33,16 @@ namespace hector {
       config_.use_multi_level_maps = true;
       config_.update_free_factor = 0.4f;
       config_.update_occupied_factor = 0.9f;
-      config_.min_update_angle = 0.9f;
+      config_.min_update_theta = 0.9f;
       config_.min_update_distance = 0.4f;
 
-      processor_ = new SlamProcessor(config_.map_properties, config_.use_multi_level_maps);
+      processor_ = new SlamProcessor(config_.map_properties, config_.use_multi_level_maps, config_.update_free_factor, config_.update_occupied_factor, config_.min_update_distance, config_.min_update_theta);
     }
 
     HectorMapping(const HectorMappingConfig& config)
     {
       config_ = config;
-      processor_ = new SlamProcessor(config.map_properties, config.use_multi_level_maps);
+      processor_ = new SlamProcessor(config.map_properties, config.use_multi_level_maps, config.update_free_factor, config.update_occupied_factor, config.min_update_distance, config.min_update_theta);
     }
 
     ~HectorMapping()

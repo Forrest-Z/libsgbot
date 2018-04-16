@@ -29,7 +29,7 @@ namespace hector {
     bool use_multi_level_maps;
     float update_free_factor;
     float update_occupied_factor;
-    float min_update_angle;
+    float min_update_theta;
     float min_update_distance;
 
   };  // HectorMappingConfig
