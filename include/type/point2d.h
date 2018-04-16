@@ -89,6 +89,19 @@ namespace sgbot {
     sgbot::la::Vector<float, 2> point_;
   };  // class Point2D
 
+  inline float distance(const Point2D& p1, const Point2D& p2)
+  {
+    sgbot::la::Vector<float, 2> v1, v2;
+    
+    v1(0) = p1.x();
+    v1(1) = p1.y();
+
+    v2(0) = p2.x();
+    v2(0) = p2.y();
+
+    return (v1 - v2).length();
+  }
+
 }  // namespace sgbot
 
 #endif  // _TYPE_POINT2D_H_

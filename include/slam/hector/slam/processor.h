@@ -74,6 +74,21 @@ namespace hector {
       return last_scanmatch_pose_;
     }
 
+    float getMapScaleFactor() const
+    {
+      return map_representation_->getScalingFactor();
+    }
+
+    int getMapLevels() const
+    {
+      return map_representation_->getLevels();
+    }
+
+    OccupancyGridMap& getMap(int level) const
+    {
+      return map_representation_->getMap(level);
+    }
+
   private:
     MapRepresentationBase* map_representation_;
 

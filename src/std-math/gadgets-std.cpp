@@ -32,7 +32,28 @@ namespace math {
 
   bool farAwayBetweenPoses(const sgbot::Pose2D& p1, const sgbot::Pose2D& p2, float distance_diff, float theta_diff)
   {
-    // TODO: not implement
+    if(distance(p1, p2) > distance_diff)
+    {
+      return true;
+    }
+
+    float delta_theta = p1.theta() - p2.theta();
+
+    if(delta_theta > M_PI)
+    {
+      delta_theta -= M_PI * 2.0f;
+    }
+    else if(delta_theta < -M_PI)
+    {
+      delta_theta += M_PI * 2.0f;
+    }
+
+    if(sgbot::math::fabs(delta_theta) > theta_diff)
+    {
+      return true;
+    }
+
+    return false;
   }
 
 }  // namespace math
