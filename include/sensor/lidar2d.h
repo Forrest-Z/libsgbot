@@ -37,6 +37,22 @@ namespace sensor {
       }
     }
 
+    Lidar2D operator =(const Lidar2D& other) const
+    {
+      Lidar2D result;
+      
+      result.origin_ = other.getOrigin();
+      
+      result.points_.resize(other.getCount());
+
+      for(int i = 0; i < result.points_.size(); ++i)
+      {
+        result.points_[i] = other.getPoint(i);
+      }
+
+      return result;
+    }
+
     // Member functions
     void addBeam(float angle, float distance)
     {
@@ -95,6 +111,28 @@ namespace sensor {
       return *this;
     }
 
+    Lidar2D operator *(float factor) const
+    {
+      Lidar2D result = *this;
+      result.origin_ *= factor;
+      for(int i = 0; i < result.points_.size(); i++)
+      {
+        result.points_[i] *= factor;
+      }
+      return result;
+    }
+
+    Lidar2D operator /(float factor) const
+    {
+      Lidar2D result = *this;
+      result.origin_ /= factor;
+      for(int i = 0; i < result.points_.size(); i++)
+      {
+        result.points_[i] /= factor;
+      }
+      return result;
+    }
+
     const sgbot::Point2D& getOrigin() const
     {
       return origin_;
@@ -105,7 +143,7 @@ namespace sensor {
       origin_ = origin;
     }
 
-  private:
+  protected:
     std::vector<sgbot::Point2D> points_;
     sgbot::Point2D origin_;
   };

@@ -135,12 +135,12 @@ namespace hector {
       }
     }
 
-    CellType& getCell(int x, int y)
+    CellType& getCell(int x, int y) const
     {
       return cells_[(y * width_) + x];
     }
 
-    CellType& getCell(int index)
+    CellType& getCell(int index) const
     {
       return cells_[index];
     }

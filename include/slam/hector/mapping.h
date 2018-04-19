@@ -54,9 +54,38 @@ namespace hector {
 
     void updateByScanWithGyro(const sgbot::sensor::Lidar2D& scan, const sgbot::sensor::Gyro& gyro);
 
-    bool getMapAndPose(sgbot::Map2D& map, sgbot::Pose2D& pose)
+    sgbot::Map2D getMap(const int level) const
     {
+      const OccupancyGridMap& gridmap = processor_->getMap(level);
 
+      sgbot::Map2D map(gridmap.getWidth(), gridmap.getHeight(), gridmap.getCellLength());
+
+      for(int i = 0; i < gridmap.getWidth(); i++)
+      {
+        for(int j = 0; j < gridmap.getHeight(); j++)
+        {
+          if(gridmap.isCellOccupied(i, j))
+          {
+            map.updateAsEdge(i, j);
+          }
+          else if(gridmap.isCellFree(i, j))
+          {
+            map.updateAsKnown(i, j);
+          }
+        }
+      }
+
+      return map;
+    }
+
+    sgbot::Pose2D& getPose() const
+    {
+      processor_->getLastScanMatchPose();
+    }
+
+    sgbot::la::Matrix<float, 3, 3>& getPoseCovariance() const
+    {
+      processor_->getLastScanMatchCovariance();
     }
 
   private:
