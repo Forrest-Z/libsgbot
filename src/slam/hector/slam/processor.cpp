@@ -8,6 +8,7 @@
 
 #include <slam/hector/slam/processor.h>
 #include <std-math/gadgets.h>
+#include <common/draw.h>
 
 namespace sgbot {
 namespace slam {
@@ -33,6 +34,11 @@ namespace hector {
       map_representation_->updateByScan(scan, new_world_pose);
       map_representation_->onMapUpdated();
       last_update_pose_ = new_world_pose;
+    }
+
+    if(sgbot::draw)
+    {
+      draw->update();
     }
   }
 
