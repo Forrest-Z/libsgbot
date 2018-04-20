@@ -14,6 +14,8 @@
 #include <string>
 #include <type/point2d.h>
 #include <type/pose2d.h>
+#include <sensor/lidar2d.h>
+#include <linear-algebra/matrix.h>
 
 namespace sgbot {
 

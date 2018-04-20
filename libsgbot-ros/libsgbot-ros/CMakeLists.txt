@@ -1,5 +1,0 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(libsgbot-ros)
-find_package(catkin REQUIRED)
-catkin_metapackage()
-set(env{LIBSGBOT_INCLUDE_DIR} /home/cybernik/workspace/libsgbot/include)
