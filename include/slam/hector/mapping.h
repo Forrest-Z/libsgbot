@@ -60,6 +60,8 @@ namespace hector {
 
       sgbot::Map2D map(gridmap.getWidth(), gridmap.getHeight(), gridmap.getCellLength());
 
+      processor_->lockMap(level);
+
       for(int i = 0; i < gridmap.getWidth(); i++)
       {
         for(int j = 0; j < gridmap.getHeight(); j++)
@@ -75,7 +77,14 @@ namespace hector {
         }
       }
 
+      processor_->unlockMap(level);
+
       return map;
+    }
+
+    const HectorMappingConfig& getConfig() const
+    {
+      return config_;
     }
 
     sgbot::Pose2D& getPose() const

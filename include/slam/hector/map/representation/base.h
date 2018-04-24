@@ -50,6 +50,10 @@ namespace hector {
 
     virtual void setCellOccupiedFactor(float factor) = 0;
 
+    virtual void lockMap(int level) = 0;
+
+    virtual void unlockMap(int level) = 0;
+
   protected:
     MapProperties properties_;
     std::vector<MapManager*> maps_;

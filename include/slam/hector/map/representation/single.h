@@ -80,6 +80,16 @@ namespace hector {
       maps_[0]->getMap().setCellOccupiedFactor(factor);
     }
 
+    virtual void lockMap(int level)
+    {
+      return maps_[0]->lockMap();
+    }
+
+    virtual void unlockMap(int level)
+    {
+      return maps_[0]->unlockMap();
+    }
+
   };  // RepresentationSingleMap
 
 }  // namespace hector

@@ -89,6 +89,16 @@ namespace hector {
       return map_representation_->getMap(level);
     }
 
+    void lockMap(int level)
+    {
+      map_representation_->lockMap(level);
+    }
+
+    void unlockMap(int level)
+    {
+      map_representation_->unlockMap(level);
+    }
+
   private:
     MapRepresentationBase* map_representation_;
 

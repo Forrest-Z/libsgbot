@@ -169,6 +169,18 @@ namespace hector {
         maps_[i]->getMap().setCellOccupiedFactor(factor);
       }
     }
+
+    virtual void lockMap(int level)
+    {
+      if(level < levels_)
+        return maps_[level]->lockMap();
+    }
+
+    virtual void unlockMap(int level)
+    {
+      if(level < levels_)
+        return maps_[level]->unlockMap();
+    }
   
   private:
     int levels_;
