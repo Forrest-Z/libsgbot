@@ -14,7 +14,7 @@ namespace hector {
 
   void HectorMapping::updateByScan(const sgbot::sensor::Lidar2D& scan)
   {
-    processor_->update((scan * processor_->getMapScaleFactor()), processor_->getLastScanMatchPose());
+    processor_->update((scan * processor_->getMapScaleFactor()), processor_->getLastScanMatchPose(), true);
   }
 
   void updateByScanWithGyro(const sgbot::sensor::Lidar2D& scan, const sgbot::sensor::Gyro& gyro)

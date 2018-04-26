@@ -26,7 +26,7 @@ namespace tf {
 
     result.x() = point.x();
     result.y() = point.y();
-    result.theta() = pose.theta() + theta_;
+    result.theta() = pose.theta() + getRotate();
 
     return result;
   }

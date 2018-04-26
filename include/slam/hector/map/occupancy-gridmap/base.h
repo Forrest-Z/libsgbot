@@ -94,6 +94,10 @@ namespace hector {
       current_mark_occupancy_index_ = current_updated_index_ + 2;
 
       sgbot::Pose2D map_pose = this->getMapPose(world_pose);
+
+      // debug
+      std::cout << "world pose: " << world_pose << std::endl;
+      std::cout << "map pose: " << map_pose << std::endl;
     
       // TODO: check the following code is correct
       sgbot::tf::Transform2D pose_tf(map_pose.x(), map_pose.y(), map_pose.theta(), 1.0f);
@@ -103,9 +107,15 @@ namespace hector {
       int scan_origin_x = scan_origin_in_map.x() + 0.5f;
       int scan_origin_y = scan_origin_in_map.y() + 0.5f;
 
+      // debug
+      //std::cout << "scan end point in map" << std::endl;
+
       for(int i = 0; i < scan.getCount(); ++i)
       {
         sgbot::Point2D scan_endpoint_in_map = pose_tf.transform(scan.getPoint(i));
+
+        // debug
+        //std::cout << scan_endpoint_in_map << std::endl;
 
         int scan_endpoint_x = scan_endpoint_in_map.x() + 0.5f;
         int scan_endpoint_y = scan_endpoint_in_map.y() + 0.5f;

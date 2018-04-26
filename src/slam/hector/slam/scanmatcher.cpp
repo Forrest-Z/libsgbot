@@ -8,6 +8,7 @@
 
 #include <slam/hector/slam/scanmatcher.h>
 #include <std-math/gadgets.h>
+#include <common/draw.h>
 
 namespace sgbot {
 namespace slam {
@@ -15,6 +16,17 @@ namespace hector {
 
   sgbot::Pose2D ScanMatcher::scanMatch(OccupancyGridMapOptimizer& optimizer, const sgbot::Pose2D& estimation_world_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& covariance, const int max_iteration_times)
   {
+    // debug
+std::cout << "aaaaaaaaaaaaaaaaaaaa" << std::endl;
+    if(sgbot::draw.active())
+    {
+std::cout << "bbbbbbbbbbbbbbbbbbbb" << std::endl;
+      sgbot::Pose2D estimate_map_pose = optimizer.getMapPose(estimation_world_pose);
+      sgbot::draw.drawPose(estimate_map_pose);
+      sgbot::draw.drawScan(scan);
+      sgbot::draw.update();
+    }
+
     if(scan.getCount() > 0)
     {
       sgbot::Pose2D estimate_map_pose = optimizer.getMapPose(estimation_world_pose);

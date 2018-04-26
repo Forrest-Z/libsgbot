@@ -41,6 +41,7 @@ namespace sgbot {
   class Draw {
   public:
     Draw()
+      : inst_(NULL)
     {}
 
     virtual ~Draw()
@@ -48,6 +49,7 @@ namespace sgbot {
 
     void setCallbacks(DrawCallbacks* inst)
     {
+      assert(inst);
       inst_ = inst;
     }
 
@@ -99,11 +101,16 @@ namespace sgbot {
       }
     }
 
+    bool active()
+    {
+      return !(inst_ == NULL);
+    }
+
   private:
     DrawCallbacks* inst_;
   };  // class Debug
   
-  Draw* draw;
+  static Draw draw;
 }  // namespace sgbot
 
 #endif  // _DRAW_H_

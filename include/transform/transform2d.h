@@ -37,9 +37,10 @@ namespace tf {
     // Copy constructor
     Transform2D(const Transform2D& tf)
     {
-      float x, y, theta, scalar;
-      tf.getValue(x, y, theta, scalar);
-      setValue(x, y, theta, scalar);
+      translate_ = tf.translate_;
+      rotate_ = tf.rotate_;
+      scale_ = tf.scale_;
+      tf_ = tf.tf_;
     }
 
     Transform2D& operator()(float dx, float dy, float theta, float scalar)
@@ -61,15 +62,10 @@ namespace tf {
     {
       Transform2D& result = *this;
 
-      assert(result.scalar_ == tf.scalar_);
-
-      float dx, dy, theta;
-
-      dx = result.dx_ + tf.dx_;
-      dy = result.dy_ + tf.dy_;
-      theta = result.theta_ + tf.theta_;
-
-      result.setValue(dx, dy, theta, result.scalar_);
+      result.translate_ = result.translate_ * tf.translate_;
+      result.rotate_ = result.rotate_ * tf.rotate_;
+      result.scale_ = result.scale_ * tf.scale_;
+      result.tf_ = result.tf_ * tf.tf_;
 
       return result;
     }
@@ -78,15 +74,10 @@ namespace tf {
     {
       Transform2D result(*this);
 
-      assert(result.scalar_ == tf.scalar_);
-
-      float dx, dy, theta;
-
-      dx = result.dx_ + tf.dx_;
-      dy = result.dy_ + tf.dy_;
-      theta = result.theta_ + tf.theta_;
-
-      result.setValue(dx, dy, theta, result.scalar_);
+      result.translate_ = result.translate_ * tf.translate_;
+      result.rotate_ = result.rotate_ * tf.rotate_;
+      result.scale_ = result.scale_ * tf.scale_;
+      result.tf_ = result.tf_ * tf.tf_;
 
       return result;
     }
@@ -102,16 +93,27 @@ namespace tf {
 
     void getValue(float& dx, float& dy, float& theta, float& scalar) const
     {
-      dx = dx_;
-      dy = dy_;
-      theta = theta_;
-      scalar = scalar_;
+      getTranslation(dx, dy);
+      theta = getRotate();
+      scalar = getScalar();
+    }
+
+    sgbot::la::Matrix<float, 3, 3> getMatrix() const
+    {
+      return tf_;
     }
 
     // Get a inverse transform
     Transform2D inverse() const
     {
-      return Transform2D(-dx_, -dy_, -theta_, (1.0f / scalar_));
+      //return Transform2D(-dx_, -dy_, -theta_, (1.0f / scalar_));
+      Transform2D inv;
+      inv.translate_ = this->translate_.inverse();
+      inv.translate_ = this->rotate_.inverse();
+      inv.translate_ = this->scale_.inverse();
+      //inv.calcTransformMatrix();
+      inv.tf_ = this->tf_.inverse();
+      return inv;
     }
 
     // To transform a pose in origin frame
@@ -119,15 +121,13 @@ namespace tf {
 
     sgbot::Point2D transform(const sgbot::Point2D& point);
 
-  private:
+  protected:
 
     void setScalar(const float scalar)
     {
       scale_(0, 0) = scalar;
       scale_(1, 1) = scalar;
       scale_(2, 2) = 1.0f;
-
-      scalar_ = scalar;
     }
 
     void setRotate(const float theta)
@@ -139,8 +139,6 @@ namespace tf {
       rotate_(1, 0) = sin_val;
       rotate_(1, 1) = cos_val;
       rotate_(2, 2) = 1.0f;
-
-      theta_ = theta;
     }
 
     void setTranslate(const float dx, const float dy)
@@ -150,9 +148,26 @@ namespace tf {
       translate_(1, 1) = 1.0f;
       translate_(1, 2) = dy;
       translate_(2, 2) = 1.0f;
+    }
 
-      dx_ = dx;
-      dy_ = dy;
+    const float getScalar() const
+    {
+      assert(scale_(0, 0) == scale_(1, 1));
+      return scale_(0, 0);
+    }
+
+    const float getRotate() const
+    {
+      assert(rotate_(0, 0) == rotate_(1, 1));
+      assert(rotate_(0, 1) == -rotate_(1, 0));
+
+      return sgbot::math::asin(rotate_(0, 1));
+    }
+
+    void getTranslation(float& dx, float& dy) const
+    {
+      dx = translate_(0, 2);
+      dy = translate_(1, 2);
     }
 
     void calcTransformMatrix()
@@ -166,10 +181,6 @@ namespace tf {
     sgbot::la::Matrix<float, 3, 3> scale_;
 
     sgbot::la::Matrix<float, 3, 3> tf_;
-
-    float dx_, dy_;
-    float theta_;
-    float scalar_;
     
   };  // class Transform2D
 

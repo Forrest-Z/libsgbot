@@ -299,8 +299,13 @@ namespace hector {
     float dy2 = surround_point_intensities[1] - surround_point_intensities[3];
 
     occupancy_value = ((surround_point_intensities[0] * (1.0f - x_factor) + surround_point_intensities[1] * x_factor) * (1.0f - y_factor)) + ((surround_point_intensities[2] * (1.0f - x_factor) + surround_point_intensities[3] * x_factor) * y_factor);
-    derivative_x = -((dx1 * (1.0f - x_factor)) + (dx2 * x_factor));
-    derivative_y = -((dy1 * (1.0f - y_factor)) + (dy2 * y_factor));
+    // TODO: to check below code, because its different from pape to implements
+    // origin code in ros-hector
+    //derivative_x = -((dx1 * (1.0f - x_factor)) + (dx2 * x_factor));
+    //derivative_y = -((dy1 * (1.0f - y_factor)) + (dy2 * y_factor));
+    // implement from pape
+    derivative_x = -((dx1 * (1.0f - y_factor)) + (dx2 * y_factor));
+    derivative_y = -((dy1 * (1.0f - x_factor)) + (dy2 * x_factor));
 
     return true;
   }

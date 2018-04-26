@@ -89,6 +89,15 @@ namespace sgbot {
     sgbot::la::Vector<float, 2> point_;
   };  // class Point2D
 
+  inline std::ostream& operator <<(std::ostream& output, const Point2D& point)
+  {
+    output << std::endl;
+    output << "[";
+    output << std::fixed << std::setprecision(2) << point.x() << ", " << point.y();
+    output << "]" << std::endl;
+    return output;
+  }
+
   inline float distance(const Point2D& p1, const Point2D& p2)
   {
     sgbot::la::Vector<float, 2> v1, v2;

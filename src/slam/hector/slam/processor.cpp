@@ -18,6 +18,9 @@ namespace hector {
   {
     sgbot::Pose2D new_world_pose;
 
+    // debug
+    std::cout << "pose hit world: " << pose_hint_world << std::endl;
+
     if(!need_matching)
     {
       new_world_pose = pose_hint_world;
@@ -27,8 +30,12 @@ namespace hector {
       new_world_pose = map_representation_->scanMatch(pose_hint_world, scan, last_scanmatch_covariance_);
     }
 
+    // debug
+    std::cout << "new world pose: " << new_world_pose << std::endl;
+
     last_scanmatch_pose_ = new_world_pose;
 
+    // TODO : confirm need_matching logic is correct
     if(sgbot::math::farAwayBetweenPoses(new_world_pose, last_update_pose_, update_distance_threshold_, update_theta_threshold_) || !need_matching)
     {
       map_representation_->updateByScan(scan, new_world_pose);
@@ -36,9 +43,9 @@ namespace hector {
       last_update_pose_ = new_world_pose;
     }
 
-    if(sgbot::draw)
+    if(sgbot::draw.active())
     {
-      draw->update();
+      sgbot::draw.update();
     }
   }
 

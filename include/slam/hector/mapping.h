@@ -37,12 +37,16 @@ namespace hector {
       config_.min_update_distance = 0.4f;
 
       processor_ = new SlamProcessor(config_.map_properties, config_.use_multi_level_maps, config_.update_free_factor, config_.update_occupied_factor, config_.min_update_distance, config_.min_update_theta);
+      
+      maps_last_update_times_.resize(processor_->getMapLevels());
     }
 
     HectorMapping(const HectorMappingConfig& config)
     {
       config_ = config;
       processor_ = new SlamProcessor(config.map_properties, config.use_multi_level_maps, config.update_free_factor, config.update_occupied_factor, config.min_update_distance, config.min_update_theta);
+
+      maps_last_update_times_.resize(processor_->getMapLevels());
     }
 
     ~HectorMapping()
@@ -54,7 +58,7 @@ namespace hector {
 
     void updateByScanWithGyro(const sgbot::sensor::Lidar2D& scan, const sgbot::sensor::Gyro& gyro);
 
-    sgbot::Map2D getMap(const int level) const
+    sgbot::Map2D getMap(const int level)
     {
       const OccupancyGridMap& gridmap = processor_->getMap(level);
 
@@ -79,6 +83,8 @@ namespace hector {
 
       processor_->unlockMap(level);
 
+      maps_last_update_times_[level] = gridmap.getUpdateTimes();
+
       return map;
     }
 
@@ -87,19 +93,27 @@ namespace hector {
       return config_;
     }
 
-    sgbot::Pose2D& getPose() const
+    const sgbot::Pose2D& getPose() const
     {
-      processor_->getLastScanMatchPose();
+      return processor_->getLastScanMatchPose();
     }
 
-    sgbot::la::Matrix<float, 3, 3>& getPoseCovariance() const
+    const sgbot::la::Matrix<float, 3, 3>& getPoseCovariance() const
     {
-      processor_->getLastScanMatchCovariance();
+      return processor_->getLastScanMatchCovariance();
+    }
+
+    bool hasUpdatedMap(int level) const
+    {
+      const OccupancyGridMap& gridmap = processor_->getMap(level);
+
+      return maps_last_update_times_[level] != gridmap.getUpdateTimes();
     }
 
   private:
     SlamProcessor* processor_;
     HectorMappingConfig config_;
+    std::vector<int> maps_last_update_times_;
 
   };  // HectorMapping
 
