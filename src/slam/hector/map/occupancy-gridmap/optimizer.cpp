@@ -16,6 +16,9 @@ namespace hector {
   {
     sgbot::tf::Transform2D state_tf = getStateTransform(estimate_pose);
 
+    // debug
+    std::cout << "state tf: " << state_tf.getMatrix() << std::endl;
+
     float sin_val = sgbot::math::sin(estimate_pose.theta());
     float cos_val = sgbot::math::cos(estimate_pose.theta());
 
@@ -23,8 +26,13 @@ namespace hector {
     float tf_y = 0.0f;
     float tf_theta = 0.0f;
 
+    // debug
+    //std::cout << scan;
+
+    hessian.zero();
+
     // TODO: set below for{} segment in openmp frameworks
-    for(int i = 0; i < scan.getCount(); i++)
+    for(int i = 0; i < scan.getCount(); ++i)
     {
       const sgbot::Point2D& p = scan.getPoint(i);
       sgbot::Point2D point_in_pose = state_tf.transform(p);
@@ -34,10 +42,17 @@ namespace hector {
       if(!interpMapValueWithDerivatives(state_tf.transform(p), occ, dx, dy))
       {
         // TODO: should put error process segment here
+
+        // debug
+        std::cout << "interpMapValueWithDerivatives fail!" << std::endl;
+
         continue;
       }
       
       float inv_occ = 1.0f - occ;
+
+      // debug
+      //std::cout << "interp: " << occ << "," << dx << "," << dy << std::endl;
 
       float rotate_deriv = (-sin_val * p.x() - cos_val * p.y()) * dx + (cos_val * p.x() - sin_val * p.y()) * dy;
 
@@ -56,6 +71,8 @@ namespace hector {
     hessian(1, 0) = hessian(0, 1);
     hessian(2, 0) = hessian(0, 2);
     hessian(2, 1) = hessian(1, 2);
+
+    delta_transformation.setValue(tf_x, tf_y, tf_theta, 1.0f);
   }
 
   sgbot::la::Matrix<float, 3, 3> OccupancyGridMapOptimizer::getPoseCovariance(const sgbot::Pose2D& map_pose, const sgbot::sensor::Lidar2D& scan)
@@ -110,6 +127,9 @@ namespace hector {
 
     // TODO: print this variant to debug
     float inv_lh_norm = 1 / likelihoods.sum();
+
+    // debug
+    std::cout << "inv_lh_norm: " << inv_lh_norm << std::endl;
 
     sgbot::la::Matrix<float, 3, 1> mean;
     for(int i = 0; i < 7; ++i)
@@ -248,6 +268,8 @@ namespace hector {
   {
     if(gridmap_->isPointOutOfMap(coords))
     {
+      // debug
+      std::cout << "coord is out of bound!" << std::endl;
       return false;
     }
 
@@ -257,9 +279,19 @@ namespace hector {
     float x_factor = coords.x() - static_cast<float>(x_floor);
     float y_factor = coords.y() - static_cast<float>(y_floor);
 
+    // debug
+    //std::cout << "ind_min: " << x_floor << "," << y_floor << std::endl;
+    //std::cout << "factor: " << x_factor << "," << y_factor << std::endl;
+
     int width = gridmap_->getWidth();
 
+    // debug
+    //std::cout << "width: " << width << std::endl;
+
     int index = y_floor * width + x_floor;
+
+    // debug
+    //std::cout << "index: " << index << std::endl;
 
     // up left point
     if(!cache_.containsCachedData(index, surround_point_intensities[0]))
@@ -291,6 +323,9 @@ namespace hector {
       surround_point_intensities[3] = getCellProbability(index);
       cache_.cacheData(index, surround_point_intensities[3]);
     }
+
+    // debug
+    //std::cout << "intensities: " << surround_point_intensities[0] << "," << surround_point_intensities[1] << "," << surround_point_intensities[2] << "," << surround_point_intensities[3] << std::endl;
 
     float dx1 = surround_point_intensities[0] - surround_point_intensities[1];
     float dx2 = surround_point_intensities[2] - surround_point_intensities[3];

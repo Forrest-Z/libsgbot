@@ -72,6 +72,11 @@ namespace la {
       return base_;
     }
 
+    virtual void zero()
+    {
+      base_.zero();
+    }
+
     // Copy operator
     virtual T& operator()(size_t index)
     {

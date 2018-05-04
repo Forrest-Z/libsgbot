@@ -25,7 +25,7 @@ namespace hector {
   public:
     HectorMapping()
     {
-      config_.map_properties.resolution = 0.025f;
+      config_.map_properties.resolution = 0.1f;
       config_.map_properties.width = 1024;
       config_.map_properties.height = 1024;
       config_.map_properties.left_offset = 0.5f;

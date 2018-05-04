@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <linear-algebra/vector.h>
 #include <std-math/math.h>
+#include <type/point2d.h>
 
 namespace sgbot {
 
@@ -87,6 +88,14 @@ namespace sgbot {
       return pose_(2);
     }
 
+    const Point2D point() const
+    {
+      Point2D p;
+      p.x() = pose_(0);
+      p.y() = pose_(1);
+      return p;
+    }
+
   private:
     sgbot::la::Vector<float, 3> pose_;
   };  // class Pose2D
@@ -108,7 +117,7 @@ namespace sgbot {
     v1(1) = p1.y();
 
     v2(0) = p2.x();
-    v2(0) = p2.y();
+    v2(1) = p2.y();
 
     return (v1 - v2).length();
   }

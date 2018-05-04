@@ -190,7 +190,12 @@ namespace la {
     virtual T sum() const
     {
       return static_cast<T>(base_.sum());
-    }    
+    }
+
+    virtual void zero()
+    {
+      base_.zero();
+    }
 
   protected:
     MatrixBase base_;

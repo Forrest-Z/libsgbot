@@ -94,6 +94,14 @@ namespace la {
       items_.resize(items);
     }
 
+    virtual void zero()
+    {
+      for(int i = 0; i < this->size(); i++)
+      {
+        items_[i] = 0.0f;
+      }
+    }
+
     // Copy operator
     virtual float& operator()(size_t index)
     {

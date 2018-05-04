@@ -147,6 +147,24 @@ namespace sensor {
     std::vector<sgbot::Point2D> points_;
     sgbot::Point2D origin_;
   };
+
+  inline std::ostream& operator <<(std::ostream& output, const Lidar2D& scan)
+  {
+    output << "[" << std::endl;
+    output << "  point cout: " << scan.getCount() << std::endl;
+    output << "  origin    : " << scan.getOrigin().x() << " , " << scan.getOrigin().y() << std::endl;
+
+    for(int i = 0; i < scan.getCount(); i++)
+    {
+      output << "(" << scan.getPoint(i).x() << "," << scan.getPoint(i).y() << ") , ";
+    }
+
+    output << std::endl;
+    
+    output << "]" << std::endl;
+    return output;
+  }
+
 }  // namespace sgbot
 }  // namespace sensor
 

@@ -18,7 +18,10 @@ namespace hector {
 
   class LogOddsCell {
   public:
-    LogOddsCell() {}
+    LogOddsCell() 
+    {
+      reset();
+    }
     
     virtual ~LogOddsCell() {}
 
@@ -97,17 +100,26 @@ namespace hector {
 
     float getProbability(const LogOddsCell& cell) const
     {
-      return sgbot::distr::logistic(cell.getValue());
+      float result = sgbot::distr::logistic(cell.getValue());
+
+      // debug
+      std::cout << "getProbability:" << result << ",cell.getValue:" << cell.getValue() << std::endl;
+
+      return result;
     }
 
     void setFreeFactor(float factor)
     {
       log_odds_free_ = sgbot::distr::logit(factor);
+      // debug
+      //std::cout << "log_odds_free_:" << log_odds_free_ << ",factor:" << factor << std::endl;
     }
 
     void setOccupiedFactor(float factor)
     {
       log_odds_occupied_ = sgbot::distr::logit(factor);
+      // debug
+      //std::cout << "log_odds_occupied_:" << log_odds_occupied_ << ",factor:" << factor << std::endl;
     }
 
   private:

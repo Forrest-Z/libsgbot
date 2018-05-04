@@ -29,7 +29,7 @@ namespace hector {
 
     virtual ~GridMapCache()
     {
-
+      deleteCache();
     }
 
     void resetCache()

@@ -211,7 +211,7 @@ namespace hector {
       std::cout << "set tf:" << top_offset << "," << left_offset << "," << cell_length <<std::endl;
     
       // TODO: set map to world affine transfomation, maybe problem here
-      map_to_world_tf_.setValue((width * left_offset), (height * top_offset), 0.0f, map_scaling_factor_);
+      map_to_world_tf_.setValue((map_scaling_factor_ * left_offset), (map_scaling_factor_ * top_offset), 0.0f, map_scaling_factor_);
 
       // debug
       std::cout << "map to world: " << map_to_world_tf_.getMatrix() << std::endl;

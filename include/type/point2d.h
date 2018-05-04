@@ -106,7 +106,7 @@ namespace sgbot {
     v1(1) = p1.y();
 
     v2(0) = p2.x();
-    v2(0) = p2.y();
+    v2(1) = p2.y();
 
     return (v1 - v2).length();
   }

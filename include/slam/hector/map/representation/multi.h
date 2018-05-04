@@ -30,7 +30,7 @@ namespace hector {
 
       levels_ = levels;
 
-      for(int i = 0; i < levels; i++)
+      for(int i = 0; i < levels; ++i)
       {
         MapProperties single_map;
 
@@ -40,7 +40,7 @@ namespace hector {
         single_map.left_offset = left_offset;
         single_map.top_offset = top_offset;
 
-        MapManager* map = new MapManager(properties);
+        MapManager* map = new MapManager(single_map);
         maps_.push_back(map);
 
         map_resolution *= 2;
@@ -103,7 +103,7 @@ namespace hector {
     {
       sgbot::Pose2D pose = estimate_world_pose;
       
-      for(int i = (levels_ - 1); i >= 0; --i)
+      for(int i = (maps_.size() - 1); i >= 0; --i)
       {
         if(i == 0)
         {
@@ -113,23 +113,20 @@ namespace hector {
         {
           float adjust_factor = 1.0f / sgbot::math::pow(2.0f, (float)i);
 
-          sgbot::sensor::Lidar2D scan_temp;
-
           sgbot::Point2D origin = scan.getOrigin();
-          origin.x() *= adjust_factor;
-          origin.y() *= adjust_factor;
-          scan_temp.setOrigin(origin);
 
-          scan_temp.clear();
+          origin *= adjust_factor;
+
+          multi_level_scans_[i - 1].setOrigin(origin);
+
+          multi_level_scans_[i - 1].clear();
+
           for(int j = 0; j < scan.getCount(); ++j)
           {
-            sgbot::Point2D point = scan.getPoint(j);
-            scan_temp.addPoint(point.x() * adjust_factor, point.y() * adjust_factor);
+            multi_level_scans_[i - 1].addPoint(scan.getPoint(j).x() * adjust_factor, scan.getPoint(j).y() * adjust_factor);
           }
 
-          multi_level_scans_[i - 1] = scan_temp;
-
-          pose = maps_[i]->getScanMatcher().scanMatch(getOptimizer(i), pose, scan_temp, covariance, 3);
+          pose = maps_[i]->getScanMatcher().scanMatch(getOptimizer(i), pose, multi_level_scans_[i - 1], covariance, 3);
         }
       }
       return pose;
@@ -140,6 +137,9 @@ namespace hector {
       for(int i = 0; i < maps_.size(); ++i)
       {
         maps_[i]->lockMap();
+
+        // debug
+        std::cout << "multi map " << i << " update!" << std::endl;        
 
         if(i == 0)
         {

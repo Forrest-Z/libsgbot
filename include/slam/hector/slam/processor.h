@@ -49,7 +49,7 @@ namespace hector {
       delete map_representation_;
     }
 
-    void update(const sgbot::sensor::Lidar2D& scan, const sgbot::Pose2D& pose_hint_world, bool need_matching = false);
+    void update(const sgbot::sensor::Lidar2D& scan, const sgbot::Pose2D& pose_hint_world, bool need_matching = true);
 
     void reset()
     {

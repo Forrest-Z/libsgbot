@@ -123,6 +123,8 @@ namespace hector {
         if((scan_origin_x != scan_endpoint_x) && (scan_origin_y != scan_endpoint_y))
         {
           updateLine(scan_origin_x, scan_origin_y, scan_endpoint_x, scan_endpoint_y);
+          // debug
+          std::cout << "b:" << scan_origin_x << "," << scan_origin_y << ",e:" << scan_endpoint_x << "," << scan_endpoint_y << std::endl;
         }
       }
 
@@ -207,7 +209,7 @@ namespace hector {
     {
       CellType& cell(this->getCell(index));
 
-      if(cell.getIndex() < current_mark_occupancy_index_)
+      if(cell.getIndex() < current_mark_free_index_)
       {
         cell_factor_.setFree(cell);
         cell.setIndex(current_mark_free_index_);
@@ -217,15 +219,19 @@ namespace hector {
     inline void updateCellAsOccupied(int index)
     {
       CellType& cell(this->getCell(index));
-      
-      if(cell.getIndex() == current_mark_free_index_)
+
+      if(cell.getIndex() < current_mark_occupancy_index_)
       {
-        cell_factor_.unsetFree(cell);
+      
+        if(cell.getIndex() == current_mark_free_index_)
+        {
+          cell_factor_.unsetFree(cell);
+        }
+
+        cell_factor_.setOccupied(cell);
+
+        cell.setIndex(current_mark_occupancy_index_);
       }
-
-      cell_factor_.setOccupied(cell);
-
-      cell.setIndex(current_mark_occupancy_index_);
     }
 
   protected:

@@ -26,6 +26,9 @@ namespace hector {
 
     MapManager(const MapProperties& properties)
     {
+      // debug
+      std::cout << "properties: " << properties.resolution << ", " <<  properties.width << ", " << properties.height << ", " << properties.left_offset << ", " << properties.top_offset << std::endl;
+
       properties_ = properties;
       gridmap_ = new OccupancyGridMap(properties.resolution, properties.width, properties.height, properties.left_offset, properties.top_offset);
       optimizer_ = new OccupancyGridMapOptimizer(gridmap_);
