@@ -209,10 +209,10 @@ namespace hector {
     {
       CellType& cell(this->getCell(index));
 
-      if(cell.getIndex() < current_mark_free_index_)
+      if(cell.index < current_mark_free_index_)
       {
         cell_factor_.setFree(cell);
-        cell.setIndex(current_mark_free_index_);
+        cell.index = current_mark_free_index_;
       }
     }
 
@@ -220,17 +220,16 @@ namespace hector {
     {
       CellType& cell(this->getCell(index));
 
-      if(cell.getIndex() < current_mark_occupancy_index_)
+      if(cell.index < current_mark_occupancy_index_)
       {
-      
-        if(cell.getIndex() == current_mark_free_index_)
+        if(cell.index == current_mark_free_index_)
         {
           cell_factor_.unsetFree(cell);
         }
 
         cell_factor_.setOccupied(cell);
 
-        cell.setIndex(current_mark_occupancy_index_);
+        cell.index = current_mark_occupancy_index_;
       }
     }
 

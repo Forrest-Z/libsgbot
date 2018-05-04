@@ -10,13 +10,14 @@
 #define _SLAM_HECTOR_MAP_CELL_LOG_ODDS_H_
 
 #include <common/exception.h>
+#include <slam/hector/map/cell/base.h>
 #include <distribution/functions.h>
 
 namespace sgbot {
 namespace slam {
 namespace hector {
 
-  class LogOddsCell {
+  class LogOddsCell : public CellBase {
   public:
     LogOddsCell() 
     {
@@ -25,45 +26,22 @@ namespace hector {
     
     virtual ~LogOddsCell() {}
 
-    void setValue(float value)
+    virtual bool isOccupied() const
     {
-      value_ = value;
+      return value > 0.0f;
     }
 
-    float getValue() const
+    virtual bool isFree() const
     {
-      return value_;
+      return value < 0.0f;
     }
 
-    void setIndex(int index)
+    virtual void reset()
     {
-      update_index_ = index;
+      value = 0.0f;
+      index = -1;
     }
 
-    int getIndex() const
-    {
-      return update_index_;
-    }
-
-    bool isOccupied() const
-    {
-      return value_ > 0.0f;
-    }
-
-    bool isFree() const
-    {
-      return value_ < 0.0f;
-    }
-
-    void reset()
-    {
-      value_ = 0.0f;
-      update_index_ = -1;
-    }
-
-  private:
-    float value_;
-    int update_index_;
   };  // class LogOddsCell
 
 
@@ -79,31 +57,28 @@ namespace hector {
 
     void setOccupied(LogOddsCell& cell) const
     {
-      float cell_value = cell.getValue();
-      if (cell_value < 50.0f)
+      if (cell.value < 50.0f)
       {
-        cell.setValue(cell_value + log_odds_occupied_);
+        cell.value += log_odds_occupied_;
       }
     }
 
     void setFree(LogOddsCell& cell) const
     {
-      float cell_value = cell.getValue();
-      cell.setValue(cell_value + log_odds_free_);
+      cell.value += log_odds_free_;
     }
 
     void unsetFree(LogOddsCell& cell) const
     {
-      float cell_value = cell.getValue();
-      cell.setValue(cell_value - log_odds_free_);
+      cell.value -= log_odds_free_;
     }
 
     float getProbability(const LogOddsCell& cell) const
     {
-      float result = sgbot::distr::logistic(cell.getValue());
+      float result = sgbot::distr::logistic(cell.value);
 
       // debug
-      std::cout << "getProbability:" << result << ",cell.getValue:" << cell.getValue() << std::endl;
+      std::cout << "getProbability:" << result << ",cell.getValue:" << cell.value << std::endl;
 
       return result;
     }
@@ -112,14 +87,14 @@ namespace hector {
     {
       log_odds_free_ = sgbot::distr::logit(factor);
       // debug
-      //std::cout << "log_odds_free_:" << log_odds_free_ << ",factor:" << factor << std::endl;
+      std::cout << "log_odds_free_:" << log_odds_free_ << ",factor:" << factor << std::endl;
     }
 
     void setOccupiedFactor(float factor)
     {
       log_odds_occupied_ = sgbot::distr::logit(factor);
       // debug
-      //std::cout << "log_odds_occupied_:" << log_odds_occupied_ << ",factor:" << factor << std::endl;
+      std::cout << "log_odds_occupied_:" << log_odds_occupied_ << ",factor:" << factor << std::endl;
     }
 
   private:
