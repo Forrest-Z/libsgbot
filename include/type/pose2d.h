@@ -104,7 +104,7 @@ namespace sgbot {
   {
     output << std::endl;
     output << "[";
-    output << std::fixed << std::setprecision(2) << pose.x() << ", " << pose.y() << ", " << pose.theta();
+    output /*<< std::fixed << std::setprecision(2)*/ << pose.x() << ", " << pose.y() << ", " << pose.theta();
     output << "]" << std::endl;
     return output;
   }

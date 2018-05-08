@@ -206,7 +206,7 @@ namespace la {
     output << "[";
     for(int i = 0; i < vector.size(); i++)
     {
-      output << std::fixed << std::setprecision(2) << vector(i) << ", ";
+      output /*<< std::fixed << std::setprecision(2)*/ << vector(i) << ", ";
     }
     output << "]" << std::endl;
     return output;

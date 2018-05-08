@@ -64,7 +64,7 @@ namespace math {
 
   float fmod(float x, float y);
 
-  inline bool sign(int n)
+  inline int sign(int n)
   {
     return (n > 0) ? 1 : -1;
   }

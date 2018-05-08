@@ -139,7 +139,7 @@ namespace hector {
         maps_[i]->lockMap();
 
         // debug
-        std::cout << "multi map " << i << " update!" << std::endl;        
+        //std::cout << "multi map " << i << " update!" << std::endl;        
 
         if(i == 0)
         {

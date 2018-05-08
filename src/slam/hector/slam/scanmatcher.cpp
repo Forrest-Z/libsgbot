@@ -54,7 +54,7 @@ namespace hector {
     optimizer.getCompleteHessianDerivs(estimation, scan, hessian_, delta_tf_);
 
     // debug
-    std::cout << "\nH: \n" << hessian_ << std::endl;
+    //std::cout << "\nH: \n" << hessian_ << std::endl;
     //std::cout << "\ndTr: \n" << delta_tf_ << std::endl;
 
     if((hessian_(0, 0) != 0.0f) && (hessian_(1, 1) != 0.0f))

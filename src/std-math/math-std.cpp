@@ -17,57 +17,57 @@ namespace math {
   
   int abs(int i)
   {
-    return ::abs(i);
+    return std::abs(i);
   }
 
   float fabs(float x)
   {
-    return ::fabs(x);
+    return std::fabs(x);
   }
 
   long labs(long n)
   {
-    return ::abs(n);
+    return std::abs(n);
   }
 
   float exp(float x)
   {
-    return ::exp(x);
+    return std::exp(x);
   }
 
   float floor(float x)
   {
-    return ::floor(x);
+    return std::floor(x);
   }
 
   float ceil(float value)
   {
-    return ::ceil(value);
+    return std::ceil(value);
   }
 
   float frexp(float value, int *eptr)
   {
-    return ::frexp(value, eptr);
+    return std::frexp(value, eptr);
   }
 
   float ldexp(float value, int exp)
   {
-    return ::ldexp(value, exp);
+    return std::ldexp(value, exp);
   }
 
   float log(float x)
   {
-    return ::log(x);
+    return std::log(x);
   }
 
   float log10(float x)
   {
-    return ::log10(x);
+    return std::log10(x);
   }
 
   float pow(float x, float y)
   {
-    return ::pow(x, y);
+    return std::pow(x, y);
   }
 
   float pow10(int p)
@@ -77,57 +77,57 @@ namespace math {
 
   float sqrt(float x)
   {
-    return ::sqrt(x);
+    return std::sqrt(x);
   }
 
   float acos(float x)
   {
-    return ::acos(x);
+    return std::acos(x);
   }
 
   float asin(float x)
   {
-    return ::asin(x);
+    return std::asin(x);
   }
 
   float atan(float x)
   {
-    return ::atan(x);
+    return std::atan(x);
   }
 
   float atan2(float y, float x)
   {
-    return ::atan2(y, x);
+    return std::atan2(y, x);
   }
 
   float cos(float x)
   {
-    return ::cos(x);
+    return std::cos(x);
   }
 
   float sin(float x)
   {
-    return ::sin(x);
+    return std::sin(x);
   }
 
   float tan(float x)
   {
-    return ::tan(x);
+    return std::tan(x);
   }
 
   float cosh(float x)
   {
-    return ::cosh(x);
+    return std::cosh(x);
   }
 
   float sinh(float x)
   {
-    return ::sinh(x);
+    return std::sinh(x);
   }
 
   float tanh(float x)
   {
-    return ::tanh(x);
+    return std::tanh(x);
   }
 
   float hypot(float x, float y)
@@ -137,7 +137,7 @@ namespace math {
 
   float fmod(float x, float y)
   {
-    return ::fmod(x, y);
+    return std::fmod(x, y);
   }
 
 }  // namespace math

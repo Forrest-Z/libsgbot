@@ -35,11 +35,16 @@ namespace hector {
     void resetCache()
     {
       current_index_++;
+      
+      // debug
+      //std::cout << "cur index: " << current_index_ << std::endl;
     }
 
     bool containsCachedData(int index, float& value)
     {
       const CachedMapElement& element(cache_array_[index]);
+
+      //std::cout << "ccd>>> index: " << index << ",ci: " << current_index_ << ",ev: " << element.value << std::endl;
 
       if(element.index == current_index_)
       {
@@ -57,6 +62,9 @@ namespace hector {
       CachedMapElement& element(cache_array_[index]);
       element.index = current_index_;
       element.value = value;
+      
+      // debug
+      //std::cout << "cd-> index: " << index << ",ei: " << element.index << ",ev: " << element.value << std::endl;
     }
 
     void setMapSize(const int width, const int height)

@@ -17,7 +17,8 @@ namespace hector {
     sgbot::tf::Transform2D state_tf = getStateTransform(estimate_pose);
 
     // debug
-    std::cout << "state tf: " << state_tf.getMatrix() << std::endl;
+    //std::cout << "pose: " << estimate_pose << std::endl;
+    //std::cout << "state tf: " << state_tf.getMatrix() << std::endl;
 
     float sin_val = sgbot::math::sin(estimate_pose.theta());
     float cos_val = sgbot::math::cos(estimate_pose.theta());
@@ -129,7 +130,7 @@ namespace hector {
     float inv_lh_norm = 1 / likelihoods.sum();
 
     // debug
-    std::cout << "inv_lh_norm: " << inv_lh_norm << std::endl;
+    //std::cout << "inv_lh_norm: " << inv_lh_norm << std::endl;
 
     sgbot::la::Matrix<float, 3, 1> mean;
     for(int i = 0; i < 7; ++i)
@@ -220,6 +221,9 @@ namespace hector {
       return 0.0f;
     }
 
+    // debug
+    //std::cout << coords.x() << "," << coords.y() << ",";
+
     int x_floor = static_cast<int>(coords.x());
     int y_floor = static_cast<int>(coords.y());
 
@@ -280,8 +284,9 @@ namespace hector {
     float y_factor = coords.y() - static_cast<float>(y_floor);
 
     // debug
-    //std::cout << "ind_min: " << x_floor << "," << y_floor << std::endl;
-    //std::cout << "factor: " << x_factor << "," << y_factor << std::endl;
+    //std::cout << "coods: " << coords.x() << "," << coords.y() << std::endl;
+    //std::cout << "indmin: " << x_floor << "," << y_floor << std::endl;
+    //std::cout << "factors: " << x_factor << "," << y_factor << std::endl;
 
     int width = gridmap_->getWidth();
 

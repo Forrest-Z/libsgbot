@@ -96,13 +96,18 @@ namespace hector {
       sgbot::Pose2D map_pose = this->getMapPose(world_pose);
 
       // debug
-      std::cout << "world pose: " << world_pose << std::endl;
-      std::cout << "map pose: " << map_pose << std::endl;
+      //std::cout << "world pose: " << world_pose << std::endl;
+      //std::cout << "map pose: " << map_pose << std::endl;
     
       // TODO: check the following code is correct
       sgbot::tf::Transform2D pose_tf(map_pose.x(), map_pose.y(), map_pose.theta(), 1.0f);
 
+      //std::cout << "pose tf:" << pose_tf.getMatrix() << std::endl;
+
       sgbot::Point2D scan_origin_in_map = pose_tf.transform(scan.getOrigin());
+
+      // debug
+      //std::cout << "origin: " << scan_origin_in_map.x() << ", " << scan_origin_in_map.y() << std::endl;
 
       int scan_origin_x = scan_origin_in_map.x() + 0.5f;
       int scan_origin_y = scan_origin_in_map.y() + 0.5f;
@@ -114,17 +119,21 @@ namespace hector {
       {
         sgbot::Point2D scan_endpoint_in_map = pose_tf.transform(scan.getPoint(i));
 
+        scan_endpoint_in_map.x() = scan_endpoint_in_map.x() + 0.5f;
+        scan_endpoint_in_map.y() = scan_endpoint_in_map.y() + 0.5f;
+
         // debug
         //std::cout << scan_endpoint_in_map << std::endl;
+        //std::cout << "laser:" << scan.getPoint(i).x() << "," << scan.getPoint(i).y() << ",map:" << scan_endpoint_in_map.x() << "," << scan_endpoint_in_map.y() << std::endl;
 
-        int scan_endpoint_x = scan_endpoint_in_map.x() + 0.5f;
-        int scan_endpoint_y = scan_endpoint_in_map.y() + 0.5f;
+        int scan_endpoint_x = static_cast<int>(scan_endpoint_in_map.x());
+        int scan_endpoint_y = static_cast<int>(scan_endpoint_in_map.y());
 
-        if((scan_origin_x != scan_endpoint_x) && (scan_origin_y != scan_endpoint_y))
+        if(!((scan_origin_x == scan_endpoint_x) && (scan_origin_y == scan_endpoint_y)))
         {
           updateLine(scan_origin_x, scan_origin_y, scan_endpoint_x, scan_endpoint_y);
           // debug
-          std::cout << "b:" << scan_origin_x << "," << scan_origin_y << ",e:" << scan_endpoint_x << "," << scan_endpoint_y << std::endl;
+          //std::cout << "b:" << scan_origin_x << "," << scan_origin_y << ",e:" << scan_endpoint_x << "," << scan_endpoint_y << std::endl;
         }
       }
 
@@ -185,6 +194,9 @@ namespace hector {
         offset_b = offset_dx;
       }
 
+      // debug
+      //std::cout << "da: " << abs_a << ",db: " << abs_b << ",error: " << error << ",offset_a: " << offset_a << ",offset_b: " << offset_b << ",offset:" << offset << std::endl;
+
       // bresenham draw line algorithm
       updateCellAsFree(offset);
 
@@ -214,6 +226,9 @@ namespace hector {
         cell_factor_.setFree(cell);
         cell.index = current_mark_free_index_;
       }
+
+      // debug
+      //std::cout << "index: " << cell.index << ",value:" << cell.value << ",current_mark_free_index_: " << current_mark_free_index_ << std::endl;
     }
 
     inline void updateCellAsOccupied(int index)
@@ -231,6 +246,9 @@ namespace hector {
 
         cell.index = current_mark_occupancy_index_;
       }
+      
+      // debug
+      //std::cout << "index: " << cell.index << ",value:" << cell.value << ",current_mark_occupancy_index_: " << current_mark_occupancy_index_ << ",current_mark_free_index_: " << current_mark_free_index_ << std::endl;
     }
 
   protected:

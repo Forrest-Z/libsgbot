@@ -93,7 +93,7 @@ namespace sgbot {
   {
     output << std::endl;
     output << "[";
-    output << std::fixed << std::setprecision(2) << point.x() << ", " << point.y();
+    output /*<< std::fixed << std::setprecision(2)*/ << point.x() << ", " << point.y();
     output << "]" << std::endl;
     return output;
   }
