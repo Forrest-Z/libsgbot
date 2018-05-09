@@ -10,6 +10,7 @@
 #define _SLAM_HECTOR_MAP_OCCUPANCY_GRIDMAP_BASE_H_
 
 #include <climits>
+#include <omp.h>
 
 #include <common/exception.h>
 #include <slam/hector/map/gridmap/base.h>

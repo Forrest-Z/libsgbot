@@ -33,7 +33,7 @@ namespace hector {
 
     virtual ~OccupancyGridMapOptimizer() {}
 
-    void getCompleteHessianDerivs(const sgbot::Pose2D& estimate_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& hessian, sgbot::tf::Transform2D& delta_transformation);
+    void getCompleteHessianDerivs(const sgbot::Pose2D& estimate_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& hessian, sgbot::la::Vector<float, 3>& delta_tf);
     
     sgbot::la::Matrix<float, 3, 3> getPoseCovariance(const sgbot::Pose2D& map_pose, const sgbot::sensor::Lidar2D& scan);
 

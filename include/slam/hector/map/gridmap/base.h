@@ -156,25 +156,25 @@ namespace hector {
     }
 
     // TODO:  to confirm this transform is correct.
-    sgbot::Point2D getWorldCoords(const sgbot::Point2D map_coords)
+    sgbot::Point2D getWorldCoords(const sgbot::Point2D& map_coords)
     {
       return world_to_map_tf_.transform(map_coords);
     }
 
     // TODO:  to confirm this transform is correct.
-    sgbot::Point2D getMapCoords(const sgbot::Point2D world_coords)
+    sgbot::Point2D getMapCoords(const sgbot::Point2D& world_coords)
     {
       return map_to_world_tf_.transform(world_coords);
     }
 
     // TODO:  to confirm this transform is correct.
-    sgbot::Pose2D getWorldPose(const sgbot::Pose2D map_pose)
+    sgbot::Pose2D getWorldPose(const sgbot::Pose2D& map_pose)
     {
       return world_to_map_tf_.transform(map_pose);
     }
 
     // TODO:  to confirm this transform is correct.
-    sgbot::Pose2D getMapPose(const sgbot::Pose2D world_pose)
+    sgbot::Pose2D getMapPose(const sgbot::Pose2D& world_pose)
     {
       return map_to_world_tf_.transform(world_pose);
     }
@@ -208,18 +208,18 @@ namespace hector {
       map_scaling_factor_ = 1.0f / cell_length;
 
       // debug
-      //std::cout << "set tf:" << top_offset << "," << left_offset << "," << cell_length <<std::endl;
+      std::cout << "set tf:" << top_offset << "," << left_offset << "," << cell_length <<std::endl;
     
       // TODO: set map to world affine transfomation, maybe problem here
       map_to_world_tf_.setValue((map_scaling_factor_ * left_offset), (map_scaling_factor_ * top_offset), 0.0f, map_scaling_factor_);
 
       // debug
-      //std::cout << "map to world: " << map_to_world_tf_.getMatrix() << std::endl;
+      std::cout << "map to world: " << map_to_world_tf_.getMatrix() << std::endl;
 
       world_to_map_tf_ = map_to_world_tf_.inverse();
 
       // debug
-      //std::cout << "world to map: " << world_to_map_tf_.getMatrix() << std::endl;
+      std::cout << "world to map: " << world_to_map_tf_.getMatrix() << std::endl;
     }
 
     bool getMapExtends(int& start_x, int& start_y, int& end_x, int& end_y)

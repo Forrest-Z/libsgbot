@@ -30,7 +30,6 @@ namespace hector {
   
   protected:
 
-    sgbot::tf::Transform2D delta_tf_;
     sgbot::la::Matrix<float, 3, 3> hessian_;
 
     bool estimateTransformation(OccupancyGridMapOptimizer& optimizer, sgbot::Pose2D& estimation, const sgbot::sensor::Lidar2D& scan);

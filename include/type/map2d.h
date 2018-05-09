@@ -10,6 +10,7 @@
 #define _TYPE_MAP2D_H_
 
 #include <common/exception.h>
+#include <type/point2d.h>
 
 namespace sgbot {
 
@@ -25,8 +26,8 @@ namespace sgbot {
       : width_(0), height_(0), resolution_(0.0f)
     {}
 
-    Map2D(int width, int height, float resolution)
-      : width_(width), height_(height), resolution_(resolution)
+    Map2D(int width, int height, Point2D origin, float resolution)
+      : width_(width), height_(height), origin_(origin), resolution_(resolution)
     {
       resize(width, height);
     }
@@ -85,6 +86,11 @@ namespace sgbot {
       return resolution_;
     }
 
+    const Point2D getOrigin() const
+    {
+      return origin_;
+    }
+
     bool isKnown(int x, int y) const
     {
       return (points_[x][y] == KNOWN_MAP_POINT);
@@ -104,6 +110,8 @@ namespace sgbot {
     int width_, height_;
     float resolution_;
     std::vector<std::vector<MapPointType> > points_;
+    Point2D origin_;
+    
   };  // class Map2D
 
 }  // namespace sgbot

@@ -7,12 +7,13 @@
  */
 
 #include <slam/hector/map/occupancy-gridmap/optimizer.h>
+#include <omp.h>
 
 namespace sgbot {
 namespace slam {
 namespace hector {
 
-  void OccupancyGridMapOptimizer::getCompleteHessianDerivs(const sgbot::Pose2D& estimate_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& hessian, sgbot::tf::Transform2D& delta_transformation)
+  void OccupancyGridMapOptimizer::getCompleteHessianDerivs(const sgbot::Pose2D& estimate_pose, const sgbot::sensor::Lidar2D& scan, sgbot::la::Matrix<float, 3, 3>& hessian, sgbot::la::Vector<float, 3>& delta_tf)
   {
     sgbot::tf::Transform2D state_tf = getStateTransform(estimate_pose);
 
@@ -32,7 +33,9 @@ namespace hector {
 
     hessian.zero();
 
-    // TODO: set below for{} segment in openmp frameworks
+    #ifdef _USE_OPENMP_
+    #pragma omp parallelfor
+    #endif
     for(int i = 0; i < scan.getCount(); ++i)
     {
       const sgbot::Point2D& p = scan.getPoint(i);
@@ -73,7 +76,9 @@ namespace hector {
     hessian(2, 0) = hessian(0, 2);
     hessian(2, 1) = hessian(1, 2);
 
-    delta_transformation.setValue(tf_x, tf_y, tf_theta, 1.0f);
+    delta_tf(0) = tf_x;
+    delta_tf(1) = tf_y;
+    delta_tf(2) = tf_theta;
   }
 
   sgbot::la::Matrix<float, 3, 3> OccupancyGridMapOptimizer::getPoseCovariance(const sgbot::Pose2D& map_pose, const sgbot::sensor::Lidar2D& scan)

@@ -25,7 +25,7 @@ namespace hector {
   public:
     HectorMapping()
     {
-      config_.map_properties.resolution = 0.1f;
+      config_.map_properties.resolution = 0.025f;
       config_.map_properties.width = 1024;
       config_.map_properties.height = 1024;
       config_.map_properties.left_offset = 0.5f;
@@ -60,23 +60,28 @@ namespace hector {
 
     sgbot::Map2D getMap(const int level)
     {
-      const OccupancyGridMap& gridmap = processor_->getMap(level);
+      OccupancyGridMap& gridmap = processor_->getMap(level);
 
-      sgbot::Map2D map(gridmap.getWidth(), gridmap.getHeight(), gridmap.getCellLength());
+      sgbot::Point2D origin = gridmap.getWorldCoords(sgbot::Point2D(0.0f, 0.0f));
+
+      // debug
+      //std::cout << "origin: " << origin.x() << "," << origin.y() << std::endl;
+
+      sgbot::Map2D map(gridmap.getWidth(), gridmap.getHeight(), origin, gridmap.getCellLength());
 
       processor_->lockMap(level);
 
-      for(int i = 0; i < gridmap.getWidth(); i++)
+      for(int i = 0; i < gridmap.getHeight(); i++)
       {
-        for(int j = 0; j < gridmap.getHeight(); j++)
+        for(int j = 0; j < gridmap.getWidth(); j++)
         {
-          if(gridmap.isCellOccupied(i, j))
+          if(gridmap.isCellOccupied(j, i))
           {
-            map.updateAsEdge(i, j);
+            map.updateAsEdge(j, i);
           }
-          else if(gridmap.isCellFree(i, j))
+          else if(gridmap.isCellFree(j, i))
           {
-            map.updateAsKnown(i, j);
+            map.updateAsKnown(j, i);
           }
         }
       }
@@ -107,7 +112,7 @@ namespace hector {
     {
       const OccupancyGridMap& gridmap = processor_->getMap(level);
 
-      return maps_last_update_times_[level] != gridmap.getUpdateTimes();
+      return maps_last_update_times_[level] < gridmap.getUpdateTimes();
     }
 
   private:

@@ -45,11 +45,6 @@ namespace hector {
       map_representation_->onMapUpdated();
       last_update_pose_ = new_world_pose;
     }
-
-    if(sgbot::draw.active())
-    {
-      sgbot::draw.update();
-    }
   }
 
 }  // namespace hector
