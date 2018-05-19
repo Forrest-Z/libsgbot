@@ -13,20 +13,20 @@
 namespace sgbot {
 namespace distr {
 
-  template <typename T, size_t Dimension>
-  bool Gaussian<T, Dimension>::sample(std::vector<Vector<T, Dimension> >& samples, const size_t numbers)
+  template <size_t Dimension>
+  bool Gaussian<Dimension>::sample(std::vector<Vector<float, Dimension> >& samples, const size_t numbers)
   {
 
   }
 
-  template <typename T, size_t Dimension>
-  bool Gaussian<T, Dimension>::sample(Vector<T, Dimension>& one_sample)
+  template <size_t Dimension>
+  bool Gaussian<Dimension>::sample(Vector<float, Dimension>& one_sample)
   {
 
   }
 
-  template <typename T, size_t Dimension>
-  float Gaussian<T, Dimension>::probability(const Vector<T, Dimension> value)
+  template <size_t Dimension>
+  float Gaussian<Dimension>::probability(const Vector<float, Dimension> value)
   {
 
   }

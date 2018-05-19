@@ -14,8 +14,8 @@
 namespace sgbot {
 namespace distr {
 
-  template <typename T, size_t Dimension>
-  class Gaussian: public Distribution<T, Dimension> {
+  template <size_t Dimension>
+  class Gaussian: public Distribution<Dimension> {
   public:
     Gaussian() {
 
@@ -25,11 +25,11 @@ namespace distr {
 
     // Member functions
 
-    virtual bool sample(std::vector<Vector<T, Dimension> >& samples, const size_t numbers);
+    virtual bool sample(std::vector<Vector<float, Dimension> >& samples, const size_t numbers);
 
-    virtual bool sample(Vector<T, Dimension>& one_sample);
+    virtual bool sample(Vector<float, Dimension>& one_sample);
 
-    virtual float probability(const Vector<T, Dimension> value);
+    virtual float probability(const Vector<float, Dimension> value);
   
   };  // class Gaussian
 }  // namespace distr

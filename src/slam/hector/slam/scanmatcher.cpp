@@ -26,7 +26,7 @@ namespace hector {
       for(int i = 0; i < max_iteration_times; ++i)
       {
         // debug
-        //estimateTransformation(optimizer, estimate_map_pose, scan);
+        estimateTransformation(optimizer, estimate_map_pose, scan);
 
         // TODO: confirm the iteration times and add debug code
       }
@@ -48,8 +48,8 @@ namespace hector {
     optimizer.getCompleteHessianDerivs(estimation, scan, hessian_, delta_tf);
 
     // debug
-    std::cout << "H: " << hessian_ << std::endl;
-    std::cout << "dTr: " << delta_tf << std::endl;
+    //std::cout << "H: " << hessian_ << std::endl;
+    //std::cout << "dTr: " << delta_tf << std::endl;
 
     if((hessian_(0, 0) != 0.0f) && (hessian_(1, 1) != 0.0f))
     {

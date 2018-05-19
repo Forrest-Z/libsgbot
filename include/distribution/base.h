@@ -19,7 +19,7 @@ namespace distr {
 
   using namespace sgbot::la;
 
-  template <typename T, size_t Dimension>
+  template <size_t Dimension>
   class Distribution {
   public:
     Distribution() {
@@ -32,28 +32,28 @@ namespace distr {
       return Dimension;
     }
 
-    virtual bool sample(std::vector<Vector<T, Dimension> >& samples, const size_t numbers) = 0;
+    virtual bool sample(std::vector<Vector<float, Dimension> >& samples, const size_t numbers) = 0;
 
-    virtual bool sample(Vector<T, Dimension>& one_sample) = 0;
+    virtual bool sample(Vector<float, Dimension>& one_sample) = 0;
 
-    virtual float probability(const Vector<T, Dimension> value) = 0;
+    virtual float probability(const Vector<float, Dimension> value) = 0;
   
   protected:
 
     // Members access functions for inherit classes
-    void getValue(Vector<T, Dimension>& mu, Matrix<T, Dimension, Dimension>& sigma) {
+    void getValue(Vector<float, Dimension>& mu, Matrix<float, Dimension, Dimension>& sigma) {
       mu = mu_;
       sigma = sigma_;
     }
 
-    void setValue(Vector<T, Dimension> mu, Matrix<T, Dimension, Dimension> sigma) {
+    void setValue(Vector<float, Dimension> mu, Matrix<float, Dimension, Dimension> sigma) {
       mu_ = mu;
       sigma_ = sigma;
     }
 
   private:
-    Vector<T, Dimension> mu_;
-    Matrix<T, Dimension, Dimension> sigma_;
+    Vector<float, Dimension> mu_;
+    Matrix<float, Dimension, Dimension> sigma_;
   };  // class Distribution
 }  // namespace distr
 }  // namespace sgbot
