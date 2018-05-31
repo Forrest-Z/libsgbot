@@ -16,9 +16,9 @@
 namespace sgbot {
 namespace nav {
 
-  class CostmapLayerBase {
+  class Costmap2DLayerBase {
 
-  };  // class CostmapLayerBase
+  };  // class Costmap2DLayerBase
 
 }  // namespace nav
 }  // namespace sgbot
